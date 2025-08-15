@@ -1,0 +1,28 @@
+{
+    "swaggerDefinition": {
+      "info": {
+        "title": "Fitness & Diet Tracking App Api",
+        "version": "1.0.0",
+        "description": "Fitness & Diet Tracking App API documentation created by Somnath Senapati",
+        "contact": {
+          "name": "Somnath Senapati"
+        },
+        "servers": [
+          "http://localhost:2809",
+          "https://ajax-node-mongodb-swagger-apidoc.onrender.com/api-docs"
+        ]  
+      },
+      "tags": [
+        {
+            "name": "Auth",
+            "description": "User Auth API"
+        }
+    ],
+    "schemes": "['https', 'http']"
+      
+    },
+    "apis": [
+      "app.js",
+      "./app/routes/*.js"
+    ]
+  }
