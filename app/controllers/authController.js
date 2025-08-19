@@ -10,7 +10,7 @@ const { comparePassword } = require("../middleware/auth");
 // @desc    User Signup with Email Verification
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password, bio} = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     // Check if user already exists
     let existingUser = await User.findOne({ email });
@@ -27,9 +27,11 @@ exports.signup = async (req, res) => {
     // Save user
     const user = new User({
       name,
+      phone,
       email,
+      address,
       password: hashedPassword,
-      bio,
+      address,
       verificationToken,
     });
     const data = await user.save();
