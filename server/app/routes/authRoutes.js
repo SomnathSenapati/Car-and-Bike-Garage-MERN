@@ -1,5 +1,5 @@
 const express = require("express");
-const { signup, verifyEmail, login } = require("../controllers/authController");
+const { signup, verifyEmail, login, forgotPassword, resetPassword } = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -60,7 +60,7 @@ router.post("/signup", signup);
  *      '200':
  *        description: Email verification successfully.
  */
-router.get("/verify", verifyEmail);
+router.post("/verify", verifyEmail);
 
 
 
@@ -98,5 +98,9 @@ router.get("/verify", verifyEmail);
 *          description: Server Error
 */
 router.post("/login", login);
+router.post("/resend-otp",verifyEmail);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
+
 
 module.exports = router;

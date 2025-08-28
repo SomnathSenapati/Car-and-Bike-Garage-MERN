@@ -19,8 +19,38 @@ app.set("views", path.join(__dirname, "views"));
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+app.get("/", (req, res) => {
+  res.send("This is MY backend");
+});
+
+// admin route
+const adminRoutes = require("./app/routes/admin/adminRoutes");
+app.use("/admin", adminRoutes);
+
+// const aboutRoutes = require("./app/routes/admin/aboutRoute");
+// app.use("/about", aboutRoutes);
+
+// const pricingRoutes = require("./app/routes/admin/pricingRoute");
+// app.use("/pricing", pricingRoutes);
+
+// const featuresRoutes = require("./app/routes/admin/featuresRoute");
+// app.use("/features", featuresRoutes);
+
+// const servicesRoutes = require("./app/routes/admin/servicesRoute");
+// app.use("/services", servicesRoutes);
+
+// const homeRoutes = require("./app/routes/admin/homeRoute");
+// app.use("/home", homeRoutes);
+
+// const contactRoutes = require("./app/routes/admin/contactRoute");
+// app.use("/contact", contactRoutes);
 
 // Routes
 app.use("/api/auth", require("./app/routes/authRoutes"));

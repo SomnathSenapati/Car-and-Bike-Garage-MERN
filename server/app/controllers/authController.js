@@ -179,3 +179,144 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.resendOtp = async (req, res) => {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({
+          status: false,
+          message: "Email is required",
+        });
+      }
+
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: "Email does not exist",
+        });
+      }
+
+      if (user.is_verify) {
+        return res.status(400).json({
+          status: false,
+          message: "Email is already verified",
+        });
+      }
+
+      // Generate and send new OTP
+      await sendEmailVerificationOTP(req, user);
+
+      return res.status(200).json({
+        status: true,
+        message: "New OTP sent to your email",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: false,
+        message: "Unable to send OTP, please try again later",
+      });
+    }
+  }
+
+exports.forgotPassword = async (req, res) => {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({
+          status: false,
+          message: "Email is required",
+        });
+      }
+
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: "User not found",
+        });
+      }
+
+      // Generate and send reset OTP
+      await sendEmailVerificationOTP(req, user); // Reuse same send OTP helper
+
+      return res.status(200).json({
+        status: true,
+        message: "Reset OTP has been sent to your email",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: false,
+        message: "Failed to send reset OTP. Please try again later.",
+      });
+    }
+  }
+
+ exports.resetPassword = async (req, res) => {
+    try {
+      const { email, otp, newPassword } = req.body;
+
+      if (!email || !otp || !newPassword) {
+        return res.status(400).json({
+          status: false,
+          message: "All fields are required",
+        });
+      }
+
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: "User not found",
+        });
+      }
+
+      const otpEntry = await otpModel.findOne({ userId: user._id, otp });
+
+      if (!otpEntry) {
+        return res.status(400).json({
+          status: false,
+          message: "Invalid or expired OTP",
+        });
+      }
+
+      // Check if OTP expired
+      const currentTime = new Date();
+      const expirationTime = new Date(
+        otpEntry.createdAt.getTime() + 15 * 60 * 1000
+      );
+      if (currentTime > expirationTime) {
+        await sendEmailVerificationOTP(req, user); // Send new OTP
+        return res.status(400).json({
+          status: false,
+          message: "OTP expired. A new OTP has been sent.",
+        });
+      }
+
+      // Update the password
+      user.password = hashedPassword(newPassword);
+      await user.save();
+
+      // Remove used OTP
+      await otpModel.deleteMany({ userId: user._id });
+
+      return res.status(200).json({
+        status: true,
+        message: "Password has been reset successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: false,
+        message: "Unable to reset password. Please try again later.",
+      });
+    }
+  }

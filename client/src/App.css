@@ -1,42 +1,230 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Scoped Login Styles */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  padding: 20px;
+}
+
+.login-form {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
   text-align: center;
+  max-width: 400px;
+  width: 100%;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.login-form h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
 }
 
-@keyframes logo-spin {
+.login-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 6px rgba(79, 172, 254, 0.3);
+}
+
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-form button:hover {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  transform: scale(1.02);
+}
+
+.login-links {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.login-links a {
+  color: #4facfe;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(-15px);
   }
+
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .login-form {
+    padding: 25px 20px;
+  }
+
+  .login-form h2 {
+    font-size: 22px;
   }
 }
 
-.card {
-  padding: 2em;
+
+
+
+
+
+/* Scoped Register Styles */
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  padding: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+.register-form {
+  background: #fff;
+  padding: 35px 25px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.register-form h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.register-form input:focus {
+  border-color: #43e97b;
+  box-shadow: 0 0 6px rgba(67, 233, 123, 0.3);
+}
+
+.register-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-form button:hover {
+  background: linear-gradient(135deg, #38f9d7, #43e97b);
+  transform: scale(1.02);
+}
+
+.register-form p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.register-form a {
+  color: #43e97b;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.register-form a:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-form {
+    padding: 25px 20px;
+  }
+
+  .register-form h2 {
+    font-size: 22px;
+  }
+}
+
+
+
+/* LOGIN BUTTON NAVBAR */
+/* Style only the login button inside the navbar */
+.navbar .btn-login {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 10px 24px;
+  transition: all 0.3s ease;
+}
+
+.navbar .btn-login:hover {
+  background: linear-gradient(135deg, #0056b3, #003d80);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
