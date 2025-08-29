@@ -116,49 +116,13 @@ const Booking = () => {
             <div className="col-lg-6">
               <div className="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn">
                 <h1 className="text-white mb-4">Book For A Service</h1>
-                <form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/booking-form";
+                  }}
+                >
                   <div className="row g-3">
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="text"
-                        className="form-control border-0"
-                        placeholder="Your Name"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="email"
-                        className="form-control border-0"
-                        placeholder="Your Email"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <select
-                        className="form-select border-0"
-                        style={{ height: "55px" }}
-                      >
-                        <option defaultValue>Select A Service</option>
-                        <option value="1">Service 1</option>
-                        <option value="2">Service 2</option>
-                        <option value="3">Service 3</option>
-                      </select>
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="date"
-                        className="form-control border-0"
-                        placeholder="Service Date"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12">
-                      <textarea
-                        className="form-control border-0"
-                        placeholder="Special Request"
-                      ></textarea>
-                    </div>
                     <div className="col-12">
                       <button
                         className="btn btn-secondary w-100 py-3"
@@ -196,7 +160,7 @@ const Booking = () => {
             <div className="col-lg-4 col-md-6">
               <div className="bg-primary d-flex flex-column justify-content-center text-center h-100 p-4">
                 <h3 className="text-white mb-4">
-                  <i className="fa fa-phone-alt me-3"></i>+012 345 6789
+                  <i className="fa fa-phone-alt me-3"></i>+91 8250188083
                 </h3>
                 <a href="#" className="btn btn-secondary py-3 px-5">
                   Contact Us<i className="fa fa-arrow-right ms-3"></i>

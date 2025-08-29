@@ -48,7 +48,7 @@ const Contact = () => {
                     <h5 className="text-uppercase">// Booking //</h5>
                     <p className="m-0">
                       <i className="fa fa-envelope-open text-primary me-2"></i>
-                      book@example.com
+                      book@drivewell.com
                     </p>
                   </div>
                 </div>
@@ -57,7 +57,7 @@ const Contact = () => {
                     <h5 className="text-uppercase">// General //</h5>
                     <p className="m-0">
                       <i className="fa fa-envelope-open text-primary me-2"></i>
-                      info@example.com
+                      info@drivewell.com
                     </p>
                   </div>
                 </div>
@@ -66,7 +66,7 @@ const Contact = () => {
                     <h5 className="text-uppercase">// Technical //</h5>
                     <p className="m-0">
                       <i className="fa fa-envelope-open text-primary me-2"></i>
-                      tech@example.com
+                      tech@drivewell.com
                     </p>
                   </div>
                 </div>
@@ -91,10 +91,10 @@ const Contact = () => {
             <div className="col-md-6">
               <div className="wow fadeInUp" data-wow-delay="0.2s">
                 <p className="mb-4">
-                  The contact form is currently inactive. Get a functional and
-                  working contact form with Ajax & PHP in a few minutes. Just
-                  copy and paste the files, add a little code and you're done.{" "}
-                  <a href="https://htmlcodex.com/contact-form">Download Now</a>.
+                  The contact form is currently inactive. If You want to say
+                  somting then feel free to call us or send an email. Thank You
+                  😊.
+                  {/* <a href="https://htmlcodex.com/contact-form">Download Now</a>. */}
                 </p>
                 <form>
                   <div className="row g-3">

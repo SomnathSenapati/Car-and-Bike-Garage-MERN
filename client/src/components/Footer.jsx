@@ -10,14 +10,14 @@ const Footer = () => {
             <div className="col-lg-3 col-md-6">
               <h4 className="text-light mb-4">Address</h4>
               <p className="mb-2">
-                <i className="fa fa-map-marker-alt me-3"></i>123 Street, New
-                York, USA
+                <i className="fa fa-map-marker-alt me-3"></i>123 Street, Mirjapur
+                , Jhargram
               </p>
               <p className="mb-2">
-                <i className="fa fa-phone-alt me-3"></i>+012 345 67890
+                <i className="fa fa-phone-alt me-3"></i>+91 8250188083
               </p>
               <p className="mb-2">
-                <i className="fa fa-envelope me-3"></i>info@example.com
+                <i className="fa fa-envelope me-3"></i>info@drivewell.com
               </p>
               <div className="d-flex pt-2">
                 <a className="btn btn-outline-light btn-social" href="">

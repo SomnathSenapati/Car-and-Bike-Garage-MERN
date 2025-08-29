@@ -1,10 +1,10 @@
 // const ErrorCode = require("../../helper/httpsServerCode");
-const AboutModel = require("../../model/admin/AboutUs");
+const mechanic = require("../../models/Mechanic");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
-class AboutController {
-  async createabout(req, res) {
+class MechanicController {
+  async createmechanic(req, res) {
     console.log(req.body);
     // console.log(req.file);
 
@@ -12,13 +12,13 @@ class AboutController {
       //console.log(req.body);
       const { title, content } = req.body;
 
-      const sdata = new AboutModel({
+      const sdata = new mechanic({
         title,
         content,
       });
       const data = await sdata.save();
       if (data) {
-        res.redirect("/about/list");
+        res.redirect("/mechanic/list");
       } else {
         res.redirect("/add");
       }
@@ -27,24 +27,24 @@ class AboutController {
     }
   }
 
-  async aboutList(req, res) {
+  async mechanicList(req, res) {
     try {
-      const data = await AboutModel.find();
+      const data = await mechanic.find();
 
-      res.render("about/list", {
-        title: "about List",
+      res.render("mechanics/list", {
+        title: "Mechanic List",
         data: data,
       });
     } catch (error) {
-      res.redirect("/about/list", { message: error.message });
+      res.redirect("/mechanics/list", { message: error.message });
     }
   }
 
   async edit(req, res) {
     try {
       const id = req.params.id;
-      const editdata = await AboutModel.findById(id);
-      res.render("about/edit", {
+      const editdata = await mechanic.findById(id);
+      res.render("mechanics/edit", {
         title: "edit page",
         data: editdata,
       });
@@ -57,12 +57,12 @@ class AboutController {
     try {
       const id = req.params.id;
 
-      // Fetch the existing about document
-      const existingabout = await AboutModel.findById(id);
-      if (!existingabout) {
+      // Fetch the existing mechanic document
+      const existingmechanic = await mechanic.findById(id);
+      if (!existingmechanic) {
         return res.status(404).json({
           status: false,
-          message: "about not found",
+          message: "mechanic not found",
         });
       }
 
@@ -71,13 +71,13 @@ class AboutController {
       // If a new image is uploaded
       if (req.file) {
         // Delete the old image file if it exists
-        if (existingabout.image) {
+        if (existingmechanic.image) {
           const oldImagePath = path.join(
             __dirname,
             "..",
             "..",
             "..",
-            existingabout.image
+            existingmechanic.image
           );
           fs.unlink(oldImagePath, (err) => {
             if (err) {
@@ -93,19 +93,19 @@ class AboutController {
         console.log("New image uploaded and path added:", req.file.path);
       }
 
-      // Update the about document
-      const updatedabout = await AboutModel.findByIdAndUpdate(id, updateData, {
+      // Update the mechanic document
+      const updatedmechanic = await mechanic.findByIdAndUpdate(id, updateData, {
         new: true,
       });
 
-      if (!updatedabout) {
+      if (!updatedmechanic) {
         return res.status(404).json({
           status: false,
-          message: "about not found",
+          message: "mechanic not found",
         });
       }
 
-      res.redirect("/about/list");
+      res.redirect("/mechanic/list");
     } catch (error) {
       console.error("Update error:", error);
       return res.status(500).json({
@@ -119,18 +119,18 @@ class AboutController {
     try {
       const id = req.params.id;
 
-      const deletedData = await AboutModel.findByIdAndDelete(id);
+      const deletedData = await mechanic.findByIdAndDelete(id);
 
       if (!deletedData) {
         return res.status(404).json({
           status: false,
-          message: "About not found",
+          message: "mechanic not found",
         });
       }
 
-      res.redirect("/about/list");
+      res.redirect("/mechanic/list");
     } catch (error) {
-      console.error("Error deleting about:", error);
+      console.error("Error deleting mechanic:", error);
       res.status(500).json({
         status: false,
         message: "Internal server error",
@@ -138,4 +138,4 @@ class AboutController {
     }
   }
 }
-module.exports = new AboutController();
+module.exports = new MechanicController();

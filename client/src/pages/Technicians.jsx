@@ -48,11 +48,7 @@ const Technicians = () => {
               { img: "team-1.jpg", delay: "0.1s" },
               { img: "team-2.jpg", delay: "0.3s" },
               { img: "team-3.jpg", delay: "0.5s" },
-              { img: "team-4.jpg", delay: "0.7s" },
-              { img: "team-2.jpg", delay: "0.1s" },
-              { img: "team-3.jpg", delay: "0.3s" },
               { img: "team-4.jpg", delay: "0.5s" },
-              { img: "team-1.jpg", delay: "0.7s" },
             ].map((tech, index) => (
               <div
                 className="col-lg-3 col-md-6 wow fadeInUp"
@@ -79,7 +75,7 @@ const Technicians = () => {
                     </div>
                   </div>
                   <div className="bg-light text-center p-4">
-                    <h5 className="fw-bold mb-0">Full Name</h5>
+                    <h5 className="fw-bold mb-0">Somnath Senapati</h5>
                     <small>Designation</small>
                   </div>
                 </div>

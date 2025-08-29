@@ -34,20 +34,14 @@ app.get("/", (req, res) => {
 const adminRoutes = require("./app/routes/admin/adminRoutes");
 app.use("/admin", adminRoutes);
 
-// const aboutRoutes = require("./app/routes/admin/aboutRoute");
-// app.use("/about", aboutRoutes);
+const mechanicsRoute = require("./app/routes/admin/mechanicsRoute");
+app.use("/mechanics", mechanicsRoute);
 
-// const pricingRoutes = require("./app/routes/admin/pricingRoute");
-// app.use("/pricing", pricingRoutes);
+const userRoute = require("./app/routes/admin/userRoutes");
+app.use("/user", userRoute);
 
-// const featuresRoutes = require("./app/routes/admin/featuresRoute");
-// app.use("/features", featuresRoutes);
-
-// const servicesRoutes = require("./app/routes/admin/servicesRoute");
-// app.use("/services", servicesRoutes);
-
-// const homeRoutes = require("./app/routes/admin/homeRoute");
-// app.use("/home", homeRoutes);
+const bookingRoute = require("./app/routes/admin/bookingRoutes");
+app.use("/booking", bookingRoute);
 
 // const contactRoutes = require("./app/routes/admin/contactRoute");
 // app.use("/contact", contactRoutes);
@@ -61,12 +55,11 @@ app.use("/api/mechanics", require("./app/routes/mechanicsRoutes"));
 app.use("/api/services", require("./app/routes/serviceRoutes"));
 app.use("/api/inventory", require("./app/routes/inventoryRoutes"));
 app.use("/api/billing ", require("./app/routes/billingRoutes"));
+app.use("/api/user ", require("./app/routes/userRoutes"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Server listen
 const port = process.env.PORT || 2809;
 app.listen(port, () => {
-  console.log(`🚀 Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
-
-// /api/customers – CRUD for customers

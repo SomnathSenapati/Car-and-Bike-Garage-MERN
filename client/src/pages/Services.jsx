@@ -97,7 +97,7 @@ const Services = () => {
                     </div>
                     <div className="col-md-6">
                       <h3 className="mb-3">
-                        15 Years Of Experience In Auto Servicing
+                        5 Years Of Experience In Auto Servicing
                       </h3>
                       <p className="mb-4">
                         Tempor erat elitr rebum at clita. Diam dolor diam ipsum
@@ -139,7 +139,7 @@ const Services = () => {
                     </div>
                     <div className="col-md-6">
                       <h3 className="mb-3">
-                        15 Years Of Experience In Auto Servicing
+                        5 Years Of Experience In Auto Servicing
                       </h3>
                       <p className="mb-4">
                         Tempor erat elitr rebum at clita. Diam dolor diam ipsum
@@ -181,7 +181,7 @@ const Services = () => {
                     </div>
                     <div className="col-md-6">
                       <h3 className="mb-3">
-                        15 Years Of Experience In Auto Servicing
+                        5 Years Of Experience In Auto Servicing
                       </h3>
                       <p className="mb-4">
                         Tempor erat elitr rebum at clita. Diam dolor diam ipsum
@@ -223,7 +223,7 @@ const Services = () => {
                     </div>
                     <div className="col-md-6">
                       <h3 className="mb-3">
-                        15 Years Of Experience In Auto Servicing
+                        5 Years Of Experience In Auto Servicing
                       </h3>
                       <p className="mb-4">
                         Tempor erat elitr rebum at clita. Diam dolor diam ipsum
@@ -285,49 +285,13 @@ const Services = () => {
                 data-wow-delay="0.6s"
               >
                 <h1 className="text-white mb-4">Book For A Service</h1>
-                <form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/booking-form";
+                  }}
+                >
                   <div className="row g-3">
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="text"
-                        className="form-control border-0"
-                        placeholder="Your Name"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="email"
-                        className="form-control border-0"
-                        placeholder="Your Email"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <select
-                        className="form-select border-0"
-                        style={{ height: "55px" }}
-                      >
-                        <option defaultValue>Select A Service</option>
-                        <option value="1">Service 1</option>
-                        <option value="2">Service 2</option>
-                        <option value="3">Service 3</option>
-                      </select>
-                    </div>
-                    <div className="col-12 col-sm-6">
-                      <input
-                        type="text"
-                        className="form-control border-0"
-                        placeholder="Service Date"
-                        style={{ height: "55px" }}
-                      />
-                    </div>
-                    <div className="col-12">
-                      <textarea
-                        className="form-control border-0"
-                        placeholder="Special Request"
-                      ></textarea>
-                    </div>
                     <div className="col-12">
                       <button
                         className="btn btn-secondary w-100 py-3"
@@ -346,80 +310,33 @@ const Services = () => {
       {/* Booking End */}
 
       {/* Testimonial Start */}
-      <div className="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+      <div className="container-xxl py-5">
         <div className="container">
           <div className="text-center">
             <h6 className="text-primary text-uppercase">// Testimonial //</h6>
             <h1 className="mb-5">Our Clients Say!</h1>
           </div>
-          <div className="owl-carousel testimonial-carousel position-relative">
-            <div className="testimonial-item text-center">
-              <img
-                className="bg-light rounded-circle p-2 mx-auto mb-3"
-                src="img/testimonial-1.jpg"
-                style={{ width: "80px", height: "80px" }}
-                alt=""
-              />
-              <h5 className="mb-0">Client Name</h5>
-              <p>Profession</p>
-              <div className="testimonial-text bg-light text-center p-4">
-                <p className="mb-0">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit
-                  diam amet diam et eos. Clita erat ipsum et lorem et sit.
-                </p>
+          <div className="row">
+            {[1, 2, 3, 4].map((num, i) => (
+              <div key={i} className="col-md-6 col-lg-3 text-center">
+                <div className="testimonial-item text-center">
+                  <img
+                    className="bg-light rounded-circle p-2 mx-auto mb-3"
+                    src={`img/testimonial-${num}.jpg`}
+                    alt={`Testimonial ${num}`}
+                    style={{ width: "80px", height: "80px" }}
+                  />
+                  <h5 className="mb-0">Client Name</h5>
+                  <p>Profession</p>
+                  <div className="testimonial-text bg-light text-center p-4">
+                    <p className="mb-0">
+                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum
+                      sit diam amet diam et eos...
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="testimonial-item text-center">
-              <img
-                className="bg-light rounded-circle p-2 mx-auto mb-3"
-                src="img/testimonial-2.jpg"
-                style={{ width: "80px", height: "80px" }}
-                alt=""
-              />
-              <h5 className="mb-0">Client Name</h5>
-              <p>Profession</p>
-              <div className="testimonial-text bg-light text-center p-4">
-                <p className="mb-0">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit
-                  diam amet diam et eos. Clita erat ipsum et lorem et sit.
-                </p>
-              </div>
-            </div>
-
-            <div className="testimonial-item text-center">
-              <img
-                className="bg-light rounded-circle p-2 mx-auto mb-3"
-                src="img/testimonial-3.jpg"
-                style={{ width: "80px", height: "80px" }}
-                alt=""
-              />
-              <h5 className="mb-0">Client Name</h5>
-              <p>Profession</p>
-              <div className="testimonial-text bg-light text-center p-4">
-                <p className="mb-0">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit
-                  diam amet diam et eos. Clita erat ipsum et lorem et sit.
-                </p>
-              </div>
-            </div>
-
-            <div className="testimonial-item text-center">
-              <img
-                className="bg-light rounded-circle p-2 mx-auto mb-3"
-                src="img/testimonial-4.jpg"
-                style={{ width: "80px", height: "80px" }}
-                alt=""
-              />
-              <h5 className="mb-0">Client Name</h5>
-              <p>Profession</p>
-              <div className="testimonial-text bg-light text-center p-4">
-                <p className="mb-0">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit
-                  diam amet diam et eos. Clita erat ipsum et lorem et sit.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ import Technicians from "../pages/Technicians"
 import Testimonial from "../pages/Testimonial";
 import Profile from "../pages/Profile";
 import VerifyEmail from "../pages/VerifyEmail";
+import PrivateRoute from "../components/PrivateRoute";
+import BookingForm from "../pages/bookinkForm";
 
 const Router = () => {
   return (
@@ -27,7 +29,6 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
@@ -36,6 +37,24 @@ const Router = () => {
           <Route path="/testimonial" element={<Testimonial />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/emailVerification" element={<VerifyEmail />} />
+
+          {/* protect route */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/booking-form"
+            element={
+              <PrivateRoute>
+                < BookingForm/>
+              </PrivateRoute>
+            }
+          />
 
           {/* all else route */}
           <Route path="*" element={<NotFound />} />

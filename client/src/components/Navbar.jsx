@@ -22,7 +22,7 @@ const Navbar = () => {
     localStorage.removeItem("username");
     setIsLoggedIn(false);
     setUserName("");
-    navigate("/login"); // ✅ redirect without refresh
+    navigate("/login");
   };
 
   return (
@@ -98,8 +98,8 @@ const Navbar = () => {
                   Hello, {userName}
                 </a>
                 <div className="dropdown-menu dropdown-menu-end m-0">
-                  <a href="/profile" className="dropdown-item">
-                    Profile
+                  <a href="/dashboard" className="dropdown-item">
+                    Dashboard
                   </a>
                   <button className="dropdown-item" onClick={handleLogout}>
                     Logout

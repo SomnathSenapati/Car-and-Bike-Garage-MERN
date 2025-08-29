@@ -1,25 +1,28 @@
 // const ErrorCode = require("../../helper/httpsServerCode");
-const FeaturesModel = require("../../model/admin/Features");
+const booking = require("../../models/Booking");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
-class FeaturesController {
-  async add(req, res) {
+const Customer = require("../../models/User");
+const Vehicle = require("../../models/Vehicle");
+const Service = require("../../models/Service");
+const Mechanic = require("../../models/Mechanic");
+class bookingController {
+  async createbooking(req, res) {
     console.log(req.body);
     // console.log(req.file);
 
     try {
       //console.log(req.body);
-      const { title, description, icon } = req.body;
+      const { title, content } = req.body;
 
-      const sdata = new FeaturesModel({
+      const sdata = new booking({
         title,
-        description,
-        icon,
+        content,
       });
       const data = await sdata.save();
       if (data) {
-        res.redirect("/features/list");
+        res.redirect("/booking/list");
       } else {
         res.redirect("/add");
       }
@@ -28,24 +31,44 @@ class FeaturesController {
     }
   }
 
-  async List(req, res) {
+  async bookingList(req, res) {
     try {
-      const data = await FeaturesModel.find();
+      const data = await booking
+        .find()
+        // .populate("customer", "name")
+        // .populate("vehicle", "model")
+        // .populate("service", "name")
+        // .populate("mechanic", "name")
+        // .lean();
 
-      res.render("features/list", {
-        title: "features List",
+        const customers = await Customer.find();
+        const vehicles = await Vehicle.find();
+        const services = await Service.find();
+        const mechanics = await Mechanic.find();
+
+      res.render("booking/list", {
+        title: "Booking List",
         data: data,
+        customers,
+        vehicles,
+        services,
+        mechanics,
+        message: null,
       });
     } catch (error) {
-      res.redirect("/features/list", { message: error.message });
+      res.render("booking/list", {
+        title: "Booking List",
+        data: [],
+        message: error.message,
+      });
     }
   }
 
   async edit(req, res) {
     try {
       const id = req.params.id;
-      const editdata = await FeaturesModel.findById(id);
-      res.render("features/edit", {
+      const editdata = await booking.findById(id);
+      res.render("booking/edit", {
         title: "edit page",
         data: editdata,
       });
@@ -58,12 +81,12 @@ class FeaturesController {
     try {
       const id = req.params.id;
 
-      // Fetch the existing features document
-      const existingfeatures = await FeaturesModel.findById(id);
-      if (!existingfeatures) {
+      // Fetch the existing booking document
+      const existingbooking = await booking.findById(id);
+      if (!existingbooking) {
         return res.status(404).json({
           status: false,
-          message: "features not found",
+          message: "booking not found",
         });
       }
 
@@ -72,13 +95,13 @@ class FeaturesController {
       // If a new image is uploaded
       if (req.file) {
         // Delete the old image file if it exists
-        if (existingfeatures.image) {
+        if (existingbooking.image) {
           const oldImagePath = path.join(
             __dirname,
             "..",
             "..",
             "..",
-            existingfeatures.image
+            existingbooking.image
           );
           fs.unlink(oldImagePath, (err) => {
             if (err) {
@@ -94,23 +117,19 @@ class FeaturesController {
         console.log("New image uploaded and path added:", req.file.path);
       }
 
-      // Update the features document
-      const updatedfeatures = await FeaturesModel.findByIdAndUpdate(
-        id,
-        updateData,
-        {
-          new: true,
-        }
-      );
+      // Update the booking document
+      const updatedbooking = await booking.findByIdAndUpdate(id, updateData, {
+        new: true,
+      });
 
-      if (!updatedfeatures) {
+      if (!updatedbooking) {
         return res.status(404).json({
           status: false,
-          message: "features not found",
+          message: "booking not found",
         });
       }
 
-      res.redirect("/features/list");
+      res.redirect("/booking/list");
     } catch (error) {
       console.error("Update error:", error);
       return res.status(500).json({
@@ -124,18 +143,18 @@ class FeaturesController {
     try {
       const id = req.params.id;
 
-      const deletedData = await FeaturesModel.findByIdAndDelete(id);
+      const deletedData = await booking.findByIdAndDelete(id);
 
       if (!deletedData) {
         return res.status(404).json({
           status: false,
-          message: "Features not found",
+          message: "booking not found",
         });
       }
 
-      res.redirect("/features/list");
+      res.redirect("/booking/list");
     } catch (error) {
-      console.error("Error deleting features:", error);
+      console.error("Error deleting booking:", error);
       res.status(500).json({
         status: false,
         message: "Internal server error",
@@ -143,4 +162,4 @@ class FeaturesController {
     }
   }
 }
-module.exports = new FeaturesController();
+module.exports = new bookingController();

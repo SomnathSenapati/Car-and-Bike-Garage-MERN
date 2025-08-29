@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Contact List</title>
+    <title>Mechanic List</title>
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <link href="/css/sb-admin-2.min.css" rel="stylesheet" />
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -15,14 +15,14 @@
           <%- include('../layout/navber.ejs') %>
 
           <div class="container-fluid">
-            <h1 class="h3 mb-4 text-gray-800">Contact Info</h1>
+            <h1 class="h3 mb-4 text-gray-800">Mechanic Info</h1>
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <a href="/contact/add" class="btn btn-success">Add Contact</a>
+                <a href="/mechanics/add" class="btn btn-success">Add Mechanic</a>
               </div>
 
               <% if (!data || data.length === 0) { %>
-                <p class="text-center text-danger mt-3">No contact info found</p>
+                <p class="text-center text-danger mt-3">No mechanic info found</p>
               <% } else { %>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -30,8 +30,10 @@
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Email</th>
+                          <th>Name</th>
                           <th>Phone</th>
+                          <th>Skillset</th>
+                          <th>Experience (yrs)</th>
                           <th>Address</th>
                           <th>Actions</th>
                         </tr>
@@ -40,12 +42,26 @@
                         <% data.forEach((item, index) => { %>
                           <tr>
                             <td><%= index + 1 %></td>
-                            <td><%= item.email %></td>
+                            <td><%= item.name %></td>
                             <td><%= item.phone %></td>
-                            <td><%= item.address %></td>
                             <td>
-                              <a href="/contact/edit/<%= item._id %>" class="btn btn-success btn-sm">Edit</a>
-                              <a href="/contact/delete/<%= item._id %>" class="btn btn-danger btn-sm">Delete</a>
+                              <% if (item.skillset && item.skillset.length > 0) { %>
+                                <%= item.skillset.join(", ") %>
+                              <% } else { %>
+                                <span class="text-muted">No skills added</span>
+                              <% } %>
+                            </td>
+                            <td><%= item.experience %> yrs</td>
+                            <td>
+                              <% if (item.address && item.address.length > 0) { %>
+                                <%= item.address.join(", ") %>
+                              <% } else { %>
+                                <span class="text-muted">No address provided</span>
+                              <% } %>
+                            </td>
+                            <td>
+                              <a href="/mechanics/edit/<%= item._id %>" class="btn btn-success btn-sm">Edit</a>
+                              <a href="/mechanics/delete/<%= item._id %>" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                           </tr>
                         <% }) %>

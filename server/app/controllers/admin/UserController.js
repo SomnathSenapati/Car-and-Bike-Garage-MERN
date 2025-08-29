@@ -1,25 +1,24 @@
-// const ErrorCode = require("../../helper/httpStatusCode");
-const ContactModel = require("../../model/admin/Contact");
+// const ErrorCode = require("../../helper/httpsServerCode");
+const user = require("../../models/User");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
-class ContactController {
-  async add(req, res) {
+class UserController {
+  async createuser(req, res) {
     console.log(req.body);
     // console.log(req.file);
 
     try {
       //console.log(req.body);
-      const { email, phone, address } = req.body;
+      const { title, content } = req.body;
 
-      const sdata = new ContactModel({
-        email,
-        phone,
-        address,
+      const sdata = new user({
+        title,
+        content,
       });
       const data = await sdata.save();
       if (data) {
-        res.redirect("/contact/list");
+        res.redirect("/user/list");
       } else {
         res.redirect("/add");
       }
@@ -27,23 +26,25 @@ class ContactController {
       console.log(error);
     }
   }
-  async List(req, res) {
-    try {
-      const data = await ContactModel.find();
 
-      res.render("contact/list", {
-        title: "contact List",
+  async userList(req, res) {
+    try {
+      const data = await user.find();
+
+      res.render("user/list", {
+        title: "user List",
         data: data,
       });
     } catch (error) {
-      res.redirect("/contact/list");
+      res.redirect("/user/list", { message: error.message });
     }
   }
+
   async edit(req, res) {
     try {
       const id = req.params.id;
-      const editdata = await ContactModel.findById(id);
-      res.render("contact/edit", {
+      const editdata = await user.findById(id);
+      res.render("user/edit", {
         title: "edit page",
         data: editdata,
       });
@@ -56,12 +57,12 @@ class ContactController {
     try {
       const id = req.params.id;
 
-      // Fetch the existing contact document
-      const existingcontact = await ContactModel.findById(id);
-      if (!existingcontact) {
+      // Fetch the existing user document
+      const existinguser = await user.findById(id);
+      if (!existinguser) {
         return res.status(404).json({
           status: false,
-          message: "contact not found",
+          message: "user not found",
         });
       }
 
@@ -70,13 +71,13 @@ class ContactController {
       // If a new image is uploaded
       if (req.file) {
         // Delete the old image file if it exists
-        if (existingcontact.image) {
+        if (existinguser.image) {
           const oldImagePath = path.join(
             __dirname,
             "..",
             "..",
             "..",
-            existingcontact.image
+            existinguser.image
           );
           fs.unlink(oldImagePath, (err) => {
             if (err) {
@@ -92,23 +93,19 @@ class ContactController {
         console.log("New image uploaded and path added:", req.file.path);
       }
 
-      // Update the contact document
-      const updatedcontact = await ContactModel.findByIdAndUpdate(
-        id,
-        updateData,
-        {
-          new: true,
-        }
-      );
+      // Update the user document
+      const updateduser = await user.findByIdAndUpdate(id, updateData, {
+        new: true,
+      });
 
-      if (!updatedcontact) {
+      if (!updateduser) {
         return res.status(404).json({
           status: false,
-          message: "contact not found",
+          message: "user not found",
         });
       }
 
-      res.redirect("/contact/list");
+      res.redirect("/user/list");
     } catch (error) {
       console.error("Update error:", error);
       return res.status(500).json({
@@ -122,18 +119,18 @@ class ContactController {
     try {
       const id = req.params.id;
 
-      const deletedData = await ContactModel.findByIdAndDelete(id);
+      const deletedData = await user.findByIdAndDelete(id);
 
       if (!deletedData) {
         return res.status(404).json({
           status: false,
-          message: "Contact not found",
+          message: "user not found",
         });
       }
 
-      res.redirect("/contact/list");
+      res.redirect("/user/list");
     } catch (error) {
-      console.error("Error deleting contact:", error);
+      console.error("Error deleting user:", error);
       res.status(500).json({
         status: false,
         message: "Internal server error",
@@ -141,4 +138,4 @@ class ContactController {
     }
   }
 }
-module.exports = new ContactController();
+module.exports = new UserController();
