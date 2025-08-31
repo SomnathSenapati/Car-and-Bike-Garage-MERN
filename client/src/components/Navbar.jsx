@@ -56,7 +56,7 @@ const Navbar = () => {
             <a href="/services" className="nav-item nav-link">
               Services
             </a>
-            <div className="nav-item dropdown">
+            {/* <div className="nav-item dropdown">
               <a
                 href="#"
                 className="nav-link dropdown-toggle"
@@ -75,7 +75,7 @@ const Navbar = () => {
                   Testimonial
                 </a>
               </div>
-            </div>
+            </div> */}
             <a href="/contact" className="nav-item nav-link">
               Contact
             </a>

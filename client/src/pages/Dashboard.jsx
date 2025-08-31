@@ -1,11 +1,32 @@
-const Dashboard = ({ user, vehicles = [], bookings = [] }) => {
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const Dashboard = ({ vehicles = [], bookings = [] }) => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // Fetch user from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <div className="dashboard">
       {/* Navbar */}
       <nav>
         <h1>DriveWell</h1>
         <div>
-          <button>Logout</button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("user");
+              window.location.href = "/login"; // redirect after logout
+            }}
+          >
+            Logout
+          </button>
         </div>
       </nav>
 
@@ -18,13 +39,13 @@ const Dashboard = ({ user, vehicles = [], bookings = [] }) => {
           <div className="card">
             <h3>Your Profile</h3>
             <p>
-              <strong>Name:</strong> {user?.name}
+              <strong>Name:</strong> {user?.name || "N/A"}
             </p>
             <p>
-              <strong>Email:</strong> {user?.email}
+              <strong>Email:</strong> {user?.email || "N/A"}
             </p>
             <p>
-              <strong>Phone:</strong> {user?.phone}
+              <strong>Phone:</strong> {user?.phone || "N/A"}
             </p>
             <button className="edit-btn">Edit Profile</button>
           </div>
@@ -60,7 +81,12 @@ const Dashboard = ({ user, vehicles = [], bookings = [] }) => {
             ) : (
               <p>No bookings found.</p>
             )}
-            <button className="book-btn">Book a Service</button>
+            <button
+              className="book-btn"
+              onClick={() => navigate("/booking-form")}
+            >
+              Book a Service
+            </button>
           </div>
         </div>
       </div>

@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+
 const Index = () => {
   return (
     <div>
@@ -25,12 +28,13 @@ const Index = () => {
                       <h1 className="display-3 text-white mb-4 pb-3 animated slideInDown">
                         Qualified Car Repair Service Center
                       </h1>
-                      <a
-                        href="#"
+                      <Link
+                        to="/booking-form"
                         className="btn btn-primary py-3 px-5 animated slideInDown"
                       >
-                        Learn More <i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                     <div className="col-lg-5 d-none d-lg-flex animated zoomIn">
                       <img
@@ -61,12 +65,13 @@ const Index = () => {
                       <h1 className="display-3 text-white mb-4 pb-3 animated slideInDown">
                         Qualified Car Wash Service Center
                       </h1>
-                      <a
-                        href="#"
+                      <Link
+                        to="/booking-form"
                         className="btn btn-primary py-3 px-5 animated slideInDown"
                       >
-                        Learn More <i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                     <div className="col-lg-5 d-none d-lg-flex animated zoomIn">
                       <img
@@ -120,9 +125,12 @@ const Index = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Quality Servicing</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="#">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -133,9 +141,12 @@ const Index = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Expert Workers</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="#">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -146,9 +157,12 @@ const Index = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Modern Equipment</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="#">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -233,9 +247,12 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <a href="#" className="btn btn-primary py-3 px-5">
-                Read More <i className="fa fa-arrow-right ms-3"></i>
-              </a>
+              <Link
+                to="/booking-form"
+                className="btn btn-primary py-3 px-5 animated slideInDown"
+              >
+                Book a Service <i className="fa fa-arrow-right ms-3"></i>
+              </Link>
             </div>
           </div>
         </div>
@@ -355,9 +372,13 @@ const Index = () => {
                         <i className="fa fa-check text-success me-3"></i>Modern
                         Equipment
                       </p>
-                      <a href="#" className="btn btn-primary py-3 px-5 mt-3">
-                        Read More<i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                      <Link
+                        to="/booking-form"
+                        className="btn btn-primary py-3 px-5 animated slideInDown"
+                      >
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -397,9 +418,13 @@ const Index = () => {
                         <i className="fa fa-check text-success me-3"></i>Modern
                         Equipment
                       </p>
-                      <a href="#" className="btn btn-primary py-3 px-5 mt-3">
-                        Read More<i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                      <Link
+                        to="/booking-form"
+                        className="btn btn-primary py-3 px-5 animated slideInDown"
+                      >
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -439,9 +464,13 @@ const Index = () => {
                         <i className="fa fa-check text-success me-3"></i>Modern
                         Equipment
                       </p>
-                      <a href="#" className="btn btn-primary py-3 px-5 mt-3">
-                        Read More<i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                      <Link
+                        to="/booking-form"
+                        className="btn btn-primary py-3 px-5 animated slideInDown"
+                      >
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -481,9 +510,13 @@ const Index = () => {
                         <i className="fa fa-check text-success me-3"></i>Modern
                         Equipment
                       </p>
-                      <a href="#" className="btn btn-primary py-3 px-5 mt-3">
-                        Read More<i className="fa fa-arrow-right ms-3"></i>
-                      </a>
+                      <Link
+                        to="/booking-form"
+                        className="btn btn-primary py-3 px-5 animated slideInDown"
+                      >
+                        Book a Service{" "}
+                        <i className="fa fa-arrow-right ms-3"></i>
+                      </Link>
                     </div>
                   </div>
                 </div>

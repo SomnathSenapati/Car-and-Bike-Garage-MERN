@@ -43,10 +43,14 @@ app.use("/user", userRoute);
 const bookingRoute = require("./app/routes/admin/bookingRoutes");
 app.use("/booking", bookingRoute);
 
-// const contactRoutes = require("./app/routes/admin/contactRoute");
-// app.use("/contact", contactRoutes);
 
-// Routes
+// admin route
+const technicianRoutes = require("./app/routes/technician/technicianRoutes");
+app.use("/technician", technicianRoutes);
+
+
+
+// API Routes
 app.use("/api/auth", require("./app/routes/authRoutes"));
 app.use("/api/users", require("./app/routes/userRoutes"));
 // app.use("/api/vehicles", require("./app/routes/vehicleRoutes"));

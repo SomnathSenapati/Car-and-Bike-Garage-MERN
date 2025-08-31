@@ -124,7 +124,7 @@ const BookingForm = () => {
 
         {/* Registration Number */}
         <div>
-          <label htmlFor="registrationNumber">Registration Number</label>
+          <label htmlFor="registrationNumber">Vehicle Number</label>
           <input
             type="text"
             id="registrationNumber"
