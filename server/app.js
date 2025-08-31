@@ -53,13 +53,15 @@ app.use("/technician", technicianRoutes);
 // API Routes
 app.use("/api/auth", require("./app/routes/authRoutes"));
 app.use("/api/users", require("./app/routes/userRoutes"));
-// app.use("/api/vehicles", require("./app/routes/vehicleRoutes"));
+app.use("/api/vehicles", require("./app/routes/vehicleRoutes"));
 app.use("/api/bookings", require("./app/routes/bookingRoutes"));
 app.use("/api/mechanics", require("./app/routes/mechanicsRoutes"));
 app.use("/api/services", require("./app/routes/serviceRoutes"));
 app.use("/api/inventory", require("./app/routes/inventoryRoutes"));
 app.use("/api/billing ", require("./app/routes/billingRoutes"));
 app.use("/api/user ", require("./app/routes/userRoutes"));
+
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Server listen

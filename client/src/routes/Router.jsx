@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Home from "../pages/Home";
 import Footer from "../components/Footer";
 import Login from "../pages/Login";
 import Booking from "../pages/Booking";
@@ -27,7 +26,6 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/booking" element={<Booking />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
@@ -48,10 +46,18 @@ const Router = () => {
             }
           />
           <Route
+            path="/booking"
+            element={
+              <PrivateRoute>
+                <Booking />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/booking-form"
             element={
               <PrivateRoute>
-                < BookingForm/>
+                <BookingForm />
               </PrivateRoute>
             }
           />

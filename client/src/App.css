@@ -1,4 +1,6 @@
-/* Scoped Login Styles */
+/* ========================
+   Login Page Styling
+======================== */
 
 .login-container {
   min-height: 100vh;
@@ -7,26 +9,31 @@
   align-items: center;
   background: linear-gradient(135deg, #4facfe, #00f2fe);
   padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Form Box */
 .login-form {
   background: #fff;
-  padding: 30px 25px;
-  border-radius: 12px;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 35px 28px;
+  border-radius: 14px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
+/* Title */
 .login-form h2 {
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 26px;
   color: #333;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
+/* Input Fields */
 .login-form input {
   width: 100%;
   padding: 12px 14px;
@@ -43,6 +50,7 @@
   box-shadow: 0 0 6px rgba(79, 172, 254, 0.3);
 }
 
+/* Buttons */
 .login-form button {
   width: 100%;
   padding: 12px;
@@ -59,17 +67,63 @@
 
 .login-form button:hover {
   background: linear-gradient(135deg, #00f2fe, #4facfe);
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
+/* Captcha Section */
+.captcha-container {
+  margin: 15px 0;
+  text-align: left;
+}
+
+.captcha-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.captcha-text {
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px #bbb;
+}
+
+/* Refresh Button */
+.refresh-btn {
+  border: none;
+  background: #e0e0e0;
+  color: #333;
+  font-size: 14px;
+  padding: 5px 7px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.refresh-btn:hover {
+  background: #4facfe;
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Links */
 .login-links {
-  margin-top: 15px;
+  margin-top: 18px;
   font-size: 14px;
   color: #666;
 }
 
 .login-links a {
   color: #4facfe;
+  font-weight: 500;
   text-decoration: none;
   transition: 0.2s;
 }
@@ -78,6 +132,7 @@
   text-decoration: underline;
 }
 
+/* Fade-in Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -90,6 +145,7 @@
   }
 }
 
+/* Responsive */
 @media (max-width: 480px) {
   .login-form {
     padding: 25px 20px;
@@ -98,10 +154,11 @@
   .login-form h2 {
     font-size: 22px;
   }
+
+  .captcha-box {
+    font-size: 18px;
+  }
 }
-
-
-
 
 
 
@@ -208,159 +265,6 @@
     font-size: 22px;
   }
 }
-
-
-
-/* LOGIN BUTTON NAVBAR */
-/* Style only the login button inside the navbar */
-.navbar .btn-login {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 25px;
-  padding: 10px 24px;
-  transition: all 0.3s ease;
-}
-
-.navbar .btn-login:hover {
-  background: linear-gradient(135deg, #0056b3, #003d80);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-
-
-/* dashboard */
-
-/* General Page Styles */
-body,
-html {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f3f4f6;
-  /* light gray */
-}
-
-/* Navbar */
-nav {
-  background: #ffffff;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-nav h1 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #2563eb;
-  /* blue-600 */
-}
-
-nav button {
-  padding: 0.5rem 1.2rem;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-nav button:hover {
-  background: #1d4ed8;
-  /* blue-700 */
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 2rem;
-}
-
-/* Heading */
-.container h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Card */
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-}
-
-.card h3 {
-  font-size: 1.125rem;
-  font-weight: bold;
-  margin-bottom: 0.75rem;
-}
-
-.card p,
-.card li {
-  font-size: 0.95rem;
-  color: #333;
-  margin: 0.3rem 0;
-}
-
-/* Buttons */
-.card button {
-  margin-top: 0.75rem;
-  padding: 0.5rem 1.2rem;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.card .edit-btn {
-  background: #3b82f6;
-  /* blue-500 */
-}
-
-.card .edit-btn:hover {
-  background: #2563eb;
-}
-
-.card .add-btn {
-  background: #22c55e;
-  /* green-500 */
-}
-
-.card .add-btn:hover {
-  background: #16a34a;
-}
-
-.card .book-btn {
-  background: #a855f7;
-  /* purple-500 */
-}
-
-.card .book-btn:hover {
-  background: #7e22ce;
-}
-
 
 
 /* BookingForm.css */

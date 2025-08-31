@@ -10,48 +10,72 @@
   <body id="page-top">
     <div id="wrapper">
       <%- include('../layout/sideber.ejs') %>
+
       <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
           <%- include('../layout/navber.ejs') %>
 
           <div class="container-fluid">
-            <h1 class="h3 mb-4 text-gray-800">Mechanic Info</h1>
+            <!-- Page Heading -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h1 class="h3 text-gray-800">
+                <i class="fas fa-tools mr-2"></i> Mechanic Management
+              </h1>
+              <a href="/mechanics/add" class="btn btn-success shadow-sm">
+                <i class="fas fa-user-cog mr-1"></i> Add Mechanic
+              </a>
+            </div>
+
+            <!-- Card -->
             <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <a href="/mechanics/add" class="btn btn-success">Add Mechanic</a>
+              <div class="card-header py-3 bg-primary d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-white">
+                  <i class="fas fa-wrench mr-1"></i> Mechanic List
+                </h6>
               </div>
 
               <% if (!data || data.length === 0) { %>
-                <p class="text-center text-danger mt-3">No mechanic info found</p>
+                <div class="p-4 text-center">
+                  <p class="text-danger mb-0">
+                    <i class="fas fa-exclamation-circle mr-1"></i> No mechanic info found
+                  </p>
+                </div>
               <% } else { %>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
+                    <table
+                      class="table table-hover table-bordered"
+                      id="dataTable"
+                      width="100%"
+                      cellspacing="0"
+                    >
+                      <thead class="thead-dark">
+                        <tr class="text-center">
                           <th>#</th>
                           <th>Name</th>
                           <th>Phone</th>
                           <th>Skillset</th>
-                          <th>Experience (yrs)</th>
+                          <th>Experience</th>
                           <th>Address</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         <% data.forEach((item, index) => { %>
-                          <tr>
+                          <tr class="align-middle text-center">
                             <td><%= index + 1 %></td>
                             <td><%= item.name %></td>
                             <td><%= item.phone %></td>
                             <td>
                               <% if (item.skillset && item.skillset.length > 0) { %>
-                                <%= item.skillset.join(", ") %>
+                                <span class="badge badge-info">
+                                  <%= item.skillset.join(", ") %>
+                                </span>
                               <% } else { %>
                                 <span class="text-muted">No skills added</span>
                               <% } %>
                             </td>
-                            <td><%= item.experience %> yrs</td>
+                            <td><span class="badge badge-secondary"><%= item.experience %> yrs</span></td>
                             <td>
                               <% if (item.address && item.address.length > 0) { %>
                                 <%= item.address.join(", ") %>
@@ -60,8 +84,12 @@
                               <% } %>
                             </td>
                             <td>
-                              <a href="/mechanics/edit/<%= item._id %>" class="btn btn-success btn-sm">Edit</a>
-                              <a href="/mechanics/delete/<%= item._id %>" class="btn btn-danger btn-sm">Delete</a>
+                              <a href="/mechanics/edit/<%= item._id %>" class="btn btn-sm btn-info">
+                                <i class="fas fa-edit"></i> Edit
+                              </a>
+                              <a href="/mechanics/delete/<%= item._id %>" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                              </a>
                             </td>
                           </tr>
                         <% }) %>

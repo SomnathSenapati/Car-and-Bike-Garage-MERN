@@ -1,42 +1,110 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    customer: "",
-    type: "",
-    brand: "",
-    model: "",
-    registrationNumber: "",
+    vehicle_type: "",
+    vehicle_brand: "",
+    vehicle_model: "",
+    vehicle_number: "",
     service: "",
   });
 
+  // Dropdown data
+  const [brands, setBrands] = useState([]);
+  const [models, setModels] = useState([]);
+
+  // Load user info from localStorage
+  useEffect(() => {
+    const storedName = localStorage.getItem("username");
+    const storedEmail = localStorage.getItem("email");
+
+    setFormData((prev) => ({
+      ...prev,
+      name: storedName || "",
+      email: storedEmail || "",
+    }));
+  }, []);
+
   // Handle input changes
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Fetch brands when vehicle_type is selected
+    if (name === "vehicle_type") {
+      setFormData((prev) => ({
+        ...prev,
+        vehicle_brand: "",
+        vehicle_model: "",
+      }));
+      fetch(`http://localhost:2809/api/vehicles/type/${value}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const uniqueBrands = [...new Set(data.map((v) => v.brand))];
+          setBrands(uniqueBrands);
+          setModels([]);
+        })
+        .catch((err) => console.error(err));
+    }
+
+    // Fetch models when vehicle_brand is selected
+    if (name === "vehicle_brand") {
+      setFormData((prev) => ({ ...prev, vehicle_model: "" })); // reset model
+      fetch(`http://localhost:2809/api/vehicles/brand/${value}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const uniqueModels = [...new Set(data.map((v) => v.model))];
+          setModels(uniqueModels);
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
-  // Handle submit
-  const handleSubmit = (e) => {
+  // Handle submit → POST to backend
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+    console.log("Submitting booking:", formData);
 
-    // TODO: Call backend API
-    // fetch("/api/vehicles", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(formData),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log("Saved:", data));
+    try {
+      const res = await fetch("http://localhost:2809/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("✅ Booking submitted successfully!");
+        // reset form but keep name & email from localStorage
+        setFormData({
+          category: localStorage.getItem("ID"),
+          name: localStorage.getItem("username") || "",
+          email: localStorage.getItem("email") || "",
+          vehicle_type: "",
+          vehicle_brand: "",
+          vehicle_model: "",
+          vehicle_number: "",
+          service: "",
+        });
+        setBrands([]);
+        setModels([]);
+      } else {
+        alert("❌ Failed to submit: " + (data.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("⚠️ Something went wrong while submitting booking");
+    }
   };
 
   return (
     <div className="vehicle-form-container">
       <h2>Register Vehicle & Book Service</h2>
       <form onSubmit={handleSubmit}>
-        {/* Customer Name */}
+        {/* Name */}
         <div>
           <label htmlFor="name">Full Name</label>
           <input
@@ -45,8 +113,8 @@ const BookingForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter full name"
             required
+            readOnly
           />
         </div>
 
@@ -59,32 +127,18 @@ const BookingForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter email"
             required
+            readOnly
           />
         </div>
 
-        {/* Customer ID (ObjectId) */}
-        {/* <div>
-          <label htmlFor="customer">Customer ID</label>
-          <input
-            type="text"
-            id="customer"
-            name="customer"
-            value={formData.customer}
-            onChange={handleChange}
-            placeholder="Enter Customer ObjectId"
-          />
-          <small>(Will be auto-linked when backend is ready)</small>
-        </div> */}
-
         {/* Vehicle Type */}
         <div>
-          <label htmlFor="type">Type</label>
+          <label htmlFor="vehicle_type">Type</label>
           <select
-            id="type"
-            name="type"
-            value={formData.type}
+            id="vehicle_type"
+            name="vehicle_type"
+            value={formData.vehicle_type}
             onChange={handleChange}
             required
           >
@@ -96,40 +150,52 @@ const BookingForm = () => {
 
         {/* Vehicle Brand */}
         <div>
-          <label htmlFor="brand">Brand</label>
-          <input
-            type="text"
-            id="brand"
-            name="brand"
-            value={formData.brand}
+          <label htmlFor="vehicle_brand">Brand</label>
+          <select
+            id="vehicle_brand"
+            name="vehicle_brand"
+            value={formData.vehicle_brand}
             onChange={handleChange}
-            placeholder="Enter Vehicle Brand (e.g. Honda)"
             required
-          />
+            disabled={!brands.length}
+          >
+            <option value="">Select Brand</option>
+            {brands.map((b, i) => (
+              <option key={i} value={b}>
+                {b}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Vehicle Model */}
         <div>
-          <label htmlFor="model">Model</label>
-          <input
-            type="text"
-            id="model"
-            name="model"
-            value={formData.model}
+          <label htmlFor="vehicle_model">Model</label>
+          <select
+            id="vehicle_model"
+            name="vehicle_model"
+            value={formData.vehicle_model}
             onChange={handleChange}
-            placeholder="Enter Vehicle Model (e.g. City, Pulsar)"
             required
-          />
+            disabled={!models.length}
+          >
+            <option value="">Select Model</option>
+            {models.map((m, i) => (
+              <option key={i} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Registration Number */}
         <div>
-          <label htmlFor="registrationNumber">Vehicle Number</label>
+          <label htmlFor="vehicle_number">Vehicle Number</label>
           <input
             type="text"
-            id="registrationNumber"
-            name="registrationNumber"
-            value={formData.registrationNumber}
+            id="vehicle_number"
+            name="vehicle_number"
+            value={formData.vehicle_number}
             onChange={handleChange}
             placeholder="Enter Registration Number"
             required
@@ -150,16 +216,16 @@ const BookingForm = () => {
             <option value="Oil Change">Oil Change</option>
             <option value="Brake Repair">Brake Repair</option>
             <option value="Full Service">Full Service</option>
-            <option value="Full Service">Dent Repair</option>
-            <option value="Full Service">Clutch Replacement</option>
-            <option value="Full Service">Wheel Alignment</option>
-            <option value="Full Service">Battery Service</option>
-            <option value="Full Service">Exhaust Repair</option>
-            <option value="Full Service">Engine Diagnostics</option>
-            <option value="Full Service">Paint Job</option>
-            <option value="Full Service">Suspension Repair</option>
-            <option value="Full Service">AC Repair</option>
-            <option value="Full Service">Normal Checking</option>
+            <option value="Dent Repair">Dent Repair</option>
+            <option value="Clutch Replacement">Clutch Replacement</option>
+            <option value="Wheel Alignment">Wheel Alignment</option>
+            <option value="Battery Service">Battery Service</option>
+            <option value="Exhaust Repair">Exhaust Repair</option>
+            <option value="Engine Diagnostics">Engine Diagnostics</option>
+            <option value="Paint Job">Paint Job</option>
+            <option value="Suspension Repair">Suspension Repair</option>
+            <option value="AC Repair">AC Repair</option>
+            <option value="Normal Checking">Normal Checking</option>
           </select>
         </div>
 

@@ -10,25 +10,47 @@
   <body id="page-top">
     <div id="wrapper">
       <%- include('../layout/sideber.ejs') %>
+
       <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
           <%- include('../layout/navber.ejs') %>
 
           <div class="container-fluid">
-            <h1 class="h3 mb-4 text-gray-800">Booking Info</h1>
+            <!-- Page Heading -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h1 class="h3 text-gray-800">
+                <i class="fas fa-calendar-check mr-2"></i> Booking Management
+              </h1>
+              <a href="/booking/add" class="btn btn-success shadow-sm">
+                <i class="fas fa-plus mr-1"></i> Add Booking
+              </a>
+            </div>
+
+            <!-- Booking Table Card -->
             <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <a href="/booking/add" class="btn btn-success">Add Booking</a>
+              <div class="card-header py-3 bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">
+                  <i class="fas fa-list mr-1"></i> Booking List
+                </h6>
               </div>
 
               <% if (!data || data.length === 0) { %>
-                <p class="text-center text-danger mt-3">No bookings found</p>
+                <div class="p-4 text-center">
+                  <p class="text-danger mb-0">
+                    <i class="fas fa-exclamation-circle mr-1"></i> No bookings found
+                  </p>
+                </div>
               <% } else { %>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
+                    <table
+                      class="table table-hover table-bordered"
+                      id="dataTable"
+                      width="100%"
+                      cellspacing="0"
+                    >
+                      <thead class="thead-dark">
+                        <tr class="text-center">
                           <th>#</th>
                           <th>Customer</th>
                           <th>Vehicle</th>
@@ -36,19 +58,35 @@
                           <th>Mechanic</th>
                           <th>Booking Date</th>
                           <th>Status</th>
-                          <th>Remarks</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         <% data.forEach((item, index) => { %>
-                          <tr>
+                          <tr class="align-middle text-center">
                             <td><%= index + 1 %></td>
-                            <td><%= item.customer ? item.customer.name : 'N/A' %></td>
-                            <td><%= item.vehicle ? item.vehicle.model : 'N/A' %></td>
-                            <td><%= item.service ? item.service.name : 'N/A' %></td>
-                            <td><%= item.mechanic ? item.mechanic.name : 'Not Assigned' %></td>
-                            <td><%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %></td>
+                            <td><%= item.name  %></td>
+                            <td>
+                              <%= item.vehicle_type %> -
+                              <%= item.vehicle_brand %> -
+                              <%= item.vehicle_model %>
+                              (<%= item.vehicle_number %>)
+                            </td>
+                            <td><%= item.service %></td>
+
+                            <!-- Mechanic dropdown -->
+                            <td>
+                              <select class="form-control form-control-sm assign-mechanic"
+                                      data-booking-id="<%= item._id %>">
+                                <option value="">-- Select Mechanic --</option>
+                              </select>
+                            </td>
+
+                            <td>
+                              <span class="badge badge-secondary">
+                                <%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %>
+                              </span>
+                            </td>
                             <td>
                               <% if (item.status === "Pending") { %>
                                 <span class="badge badge-warning">Pending</span>
@@ -58,10 +96,13 @@
                                 <span class="badge badge-success">Completed</span>
                               <% } %>
                             </td>
-                            <td><%= item.remarks || "N/A" %></td>
                             <td>
-                              <a href="/booking/edit/<%= item._id %>" class="btn btn-success btn-sm">Edit</a>
-                              <a href="/booking/delete/<%= item._id %>" class="btn btn-danger btn-sm">Delete</a>
+                              <a href="/booking/edit/<%= item._id %>" class="btn btn-sm btn-info">
+                                <i class="fas fa-edit"></i> Edit
+                              </a>
+                              <a href="/booking/delete/<%= item._id %>" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                              </a>
                             </td>
                           </tr>
                         <% }) %>
@@ -77,6 +118,7 @@
       </div>
     </div>
 
+    <!-- JS -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -84,5 +126,46 @@
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/js/demo/datatables-demo.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        const bookings = <%- JSON.stringify(data) %>;
+
+        // 1. Fetch mechanics list
+        $.get("http://localhost:2809/api/mechanics", function (mechanics) {
+          $(".assign-mechanic").each(function () {
+            const dropdown = $(this);
+            const bookingId = dropdown.data("booking-id");
+            const booking = bookings.find(b => b._id === bookingId);
+
+            mechanics.forEach((m) => {
+              const selected = booking.mechanic && booking.mechanic === m._id ? "selected" : "";
+              dropdown.append(`<option value="${m._id}" ${selected}>${m.name}</option>`);
+            });
+          });
+        });
+
+        // 2. Assign mechanic on change
+        $(document).on("change", ".assign-mechanic", function () {
+          const bookingId = $(this).data("booking-id");
+          const mechanicId = $(this).val();
+          if (!mechanicId) return;
+
+          $.ajax({
+            url: `http://localhost:2809/api/bookings/${bookingId}/assign-mechanic`,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({ mechanicId }),
+            success: function () {
+              alert("Mechanic assigned successfully!");
+              location.reload();
+            },
+            error: function () {
+              alert("Failed to assign mechanic");
+            },
+          });
+        });
+      });
+    </script>
   </body>
 </html>

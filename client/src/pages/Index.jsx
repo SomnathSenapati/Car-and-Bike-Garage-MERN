@@ -130,7 +130,7 @@ const Index = () => {
                     className="text-secondary border-bottom"
                   >
                     Book a Service
-                  </Link>
+                  </Link> 
                 </div>
               </div>
             </div>
@@ -571,7 +571,7 @@ const Index = () => {
       {/* Booking End */}
 
       {/* Team Start */}
-      <div className="container-xxl py-5">
+      {/* <div className="container-xxl py-5">
         <div className="container">
           <div className="text-center">
             <h6 className="text-primary text-uppercase">
@@ -610,7 +610,7 @@ const Index = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Team End */}
 
       {/* Testimonial Start */}

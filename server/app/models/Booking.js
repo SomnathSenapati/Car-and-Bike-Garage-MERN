@@ -4,27 +4,47 @@ const bookingSchema = new mongoose.Schema(
   {
     customer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "User",
+    },
+    name: {
+      type: String,
       required: true,
     },
-    vehicle: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Vehicle",
+    email: {
+      type: String,
+      required: true,
+    },
+    vehicle_type: {
+      type: String,
+      required: true,
+    },
+    vehicle_brand: {
+      type: String,
+      required: true,
+    },
+    vehicle_model: {
+      type: String,
+      required: true,
+    },
+    vehicle_number: {
+      type: String,
       required: true,
     },
     service: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Service",
+      type: String, 
       required: true,
     },
-    mechanic: { type: mongoose.Schema.Types.ObjectId, ref: "Mechanic" },
+    mechanic: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
     bookingDate: { type: Date, default: Date.now },
     status: {
       type: String,
       enum: ["Pending", "In Progress", "Completed"],
       default: "Pending",
     },
-    remarks: { type: String },
   },
   { timestamps: true }
 );

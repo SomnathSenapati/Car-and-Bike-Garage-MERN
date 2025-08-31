@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -47,9 +48,12 @@ const About = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Quality Servicing</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -63,9 +67,12 @@ const About = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Expert Workers</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -79,9 +86,12 @@ const About = () => {
                 <div className="ps-4">
                   <h5 className="mb-3">Modern Equipment</h5>
                   <p>Diam dolor diam ipsum sit amet diam et eos erat ipsum</p>
-                  <a className="text-secondary border-bottom" href="">
-                    Read More
-                  </a>
+                  <Link
+                    to="/booking-form"
+                    className="text-secondary border-bottom"
+                  >
+                    Book a Service
+                  </Link>
                 </div>
               </div>
             </div>
@@ -120,8 +130,8 @@ const About = () => {
             <div className="col-lg-6">
               <h6 className="text-primary text-uppercase">// About Us //</h6>
               <h1 className="mb-4">
-                <span className="text-primary">DriveWell</span> Is The Best Place
-                For Your Auto Care
+                <span className="text-primary">DriveWell</span> Is The Best
+                Place For Your Auto Care
               </h1>
               <p className="mb-4">
                 Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
@@ -167,9 +177,12 @@ const About = () => {
                 ))}
               </div>
 
-              <a href="" className="btn btn-primary py-3 px-5">
-                Read More <i className="fa fa-arrow-right ms-3"></i>
-              </a>
+              <Link
+                to="/booking-form"
+                className="btn btn-primary py-3 px-5 animated slideInDown"
+              >
+                Book a Service <i className="fa fa-arrow-right ms-3"></i>
+              </Link>
             </div>
           </div>
         </div>
