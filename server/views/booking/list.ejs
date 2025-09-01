@@ -35,81 +35,76 @@
               </div>
 
               <% if (!data || data.length === 0) { %>
-                <div class="p-4 text-center">
-                  <p class="text-danger mb-0">
-                    <i class="fas fa-exclamation-circle mr-1"></i> No bookings found
-                  </p>
-                </div>
+              <div class="p-4 text-center">
+                <p class="text-danger mb-0">
+                  <i class="fas fa-exclamation-circle mr-1"></i> No bookings found
+                </p>
+              </div>
               <% } else { %>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table
-                      class="table table-hover table-bordered"
-                      id="dataTable"
-                      width="100%"
-                      cellspacing="0"
-                    >
-                      <thead class="thead-dark">
-                        <tr class="text-center">
-                          <th>#</th>
-                          <th>Customer</th>
-                          <th>Vehicle</th>
-                          <th>Service</th>
-                          <th>Mechanic</th>
-                          <th>Booking Date</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% data.forEach((item, index) => { %>
-                          <tr class="align-middle text-center">
-                            <td><%= index + 1 %></td>
-                            <td><%= item.name  %></td>
-                            <td>
-                              <%= item.vehicle_type %> -
-                              <%= item.vehicle_brand %> -
-                              <%= item.vehicle_model %>
-                              (<%= item.vehicle_number %>)
-                            </td>
-                            <td><%= item.service %></td>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark">
+                      <tr class="text-center">
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Service</th>
+                        <th>Mechanic</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% data.forEach((item, index) => { %>
+                      <tr class="align-middle text-center">
+                        <td><%= index + 1 %></td>
+                        <td><%= item.name %></td>
+                        <td>
+                          <%= item.vehicle_type %> - <%= item.vehicle_brand %> - <%= item.vehicle_model %> (<%= item.vehicle_number %>)
+                        </td>
+                        <td><%= item.service %></td>
+                        <td><%= item.mechanic ? item.mechanic.name : 'N/A' %></td>
+                        <td>
+                          <span class="badge badge-secondary">
+                            <%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %>
+                          </span>
+                        </td>
+                        <td>
+                          <% if (item.status === "Pending") { %>
+                          <span class="badge badge-warning">Pending</span>
+                          <% } else if (item.status === "In Progress") { %>
+                          <span class="badge badge-info">In Progress</span>
+                          <% } else if (item.status === "Rejected") { %>
+                          <span class="badge badge-danger">Rejected</span>
+                          <% } else if (item.status === "Booked") { %>
+                          <span class="badge badge-success">Booked</span>
+                          <% } else { %>
+                          <span class="badge badge-success">Completed</span>
+                          <% } %>
+                        </td>
+                        <td>
+                          <% if(item.status === "Pending") { %>
+                          <!-- Reject button -->
+                          <a href="/booking/reject/<%= item._id %>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to reject this booking?')">
+                            <i class="fas fa-times-circle"></i> Reject
+                          </a>
 
-                            <!-- Mechanic dropdown -->
-                            <td>
-                              <select class="form-control form-control-sm assign-mechanic"
-                                      data-booking-id="<%= item._id %>">
-                                <option value="">-- Select Mechanic --</option>
-                              </select>
-                            </td>
-
-                            <td>
-                              <span class="badge badge-secondary">
-                                <%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %>
-                              </span>
-                            </td>
-                            <td>
-                              <% if (item.status === "Pending") { %>
-                                <span class="badge badge-warning">Pending</span>
-                              <% } else if (item.status === "In Progress") { %>
-                                <span class="badge badge-info">In Progress</span>
-                              <% } else { %>
-                                <span class="badge badge-success">Completed</span>
-                              <% } %>
-                            </td>
-                            <td>
-                              <a href="/booking/edit/<%= item._id %>" class="btn btn-sm btn-info">
-                                <i class="fas fa-edit"></i> Edit
-                              </a>
-                              <a href="/booking/delete/<%= item._id %>" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash-alt"></i> Delete
-                              </a>
-                            </td>
-                          </tr>
-                        <% }) %>
-                      </tbody>
-                    </table>
-                  </div>
+                          <!-- Confirm button -->
+                          <a href="/booking/confirm/<%= item._id %>" class="btn btn-sm btn-success ml-1" onclick="return confirm('Are you sure you want to confirm this booking?')">
+                            <i class="fas fa-check-circle"></i> Confirm
+                          </a>
+                          <% } else { %>
+                          <span>N/A</span>
+                          <% } %>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
                 </div>
+              </div>
               <% } %>
             </div>
           </div>
@@ -126,46 +121,5 @@
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/js/demo/datatables-demo.js"></script>
-
-    <script>
-      $(document).ready(function () {
-        const bookings = <%- JSON.stringify(data) %>;
-
-        // 1. Fetch mechanics list
-        $.get("http://localhost:2809/api/mechanics", function (mechanics) {
-          $(".assign-mechanic").each(function () {
-            const dropdown = $(this);
-            const bookingId = dropdown.data("booking-id");
-            const booking = bookings.find(b => b._id === bookingId);
-
-            mechanics.forEach((m) => {
-              const selected = booking.mechanic && booking.mechanic === m._id ? "selected" : "";
-              dropdown.append(`<option value="${m._id}" ${selected}>${m.name}</option>`);
-            });
-          });
-        });
-
-        // 2. Assign mechanic on change
-        $(document).on("change", ".assign-mechanic", function () {
-          const bookingId = $(this).data("booking-id");
-          const mechanicId = $(this).val();
-          if (!mechanicId) return;
-
-          $.ajax({
-            url: `http://localhost:2809/api/bookings/${bookingId}/assign-mechanic`,
-            method: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify({ mechanicId }),
-            success: function () {
-              alert("Mechanic assigned successfully!");
-              location.reload();
-            },
-            error: function () {
-              alert("Failed to assign mechanic");
-            },
-          });
-        });
-      });
-    </script>
   </body>
 </html>

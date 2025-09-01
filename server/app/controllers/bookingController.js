@@ -48,3 +48,52 @@ exports.assignMechanic = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// Get bookings for a specific user (customer)
+exports.getBookingsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // userId will come from the URL
+
+    const bookings = await Booking.find({ customer: userId })
+      .populate("customer", "name email phone role")
+      .populate("mechanic", "name email phone role");
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ message: "No bookings found for this user" });
+    }
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.confirmBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status: "Booked" }, // ✅ now valid
+      { new: true }
+    ).populate("customer mechanic");
+
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    res.json({ message: "Booking confirmed successfully", booking });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.rejectBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status: "Rejected" }, // ✅ now valid
+      { new: true }
+    ).populate("customer mechanic");
+
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    res.json({ message: "Booking rejected successfully", booking });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

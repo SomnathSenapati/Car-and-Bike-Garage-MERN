@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = ({ vehicles = [], bookings = [] }) => {
+const Dashboard = () => {
   const [user, setUser] = useState(null);
+  const [vehicles, setVehicles] = useState([]); // fetched vehicles
+  const [bookings, setBookings] = useState([]); // fetched bookings
   const navigate = useNavigate();
 
   // Capitalize first letter of name
-  const capitalize = (storedUserName) =>
-    storedUserName ? storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1) : "";
+  const capitalize = (name) =>
+    name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 
-  // Fetch user from localStorage
+  // Fetch user info and bookings/vehicles
   useEffect(() => {
+    const storedId = localStorage.getItem("ID");
     const storedUser = localStorage.getItem("user");
     const storedUserName = localStorage.getItem("username");
     const storedEmail = localStorage.getItem("email");
@@ -27,6 +30,20 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
         phone: storedPhone || "N/A",
       });
     }
+
+    // Fetch bookings for this user
+    if (storedId) {
+      fetch(`http://localhost:2809/api/bookings/user/${storedId}`)
+        .then((res) => res.json())
+        .then((data) => setBookings(data))
+        .catch((err) => console.error("Error fetching bookings:", err));
+
+      // Fetch vehicles for this user (if API exists)
+      fetch(`http://localhost:2809/api/vehicles/user/${storedId}`)
+        .then((res) => res.json())
+        .then((data) => setVehicles(data))
+        .catch((err) => console.error("Error fetching vehicles:", err));
+    }
   }, []);
 
   // Handle Logout
@@ -36,6 +53,7 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     localStorage.removeItem("phone");
+    localStorage.removeItem("ID");
 
     setUser(null);
     navigate("/login");
@@ -43,14 +61,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
 
   return (
     <div className="dashboard">
-      {/* Navbar */}
-      <nav className="dashboard-nav">
-        {/* <h1 className="logo">🚗 DriveWell</h1> */}
-        <button className="btn logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-      </nav>
-
       {/* Dashboard Content */}
       <div className="dashboard-container">
         <h2 className="welcome">
@@ -61,6 +71,9 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           {/* Profile Card */}
           <div className="dashboard-card">
             <h3>Your Profile</h3>
+            <p>
+              <strong>Id:</strong> {localStorage.getItem("ID") || "N/A"}
+            </p>
             <p>
               <strong>Name:</strong> {user?.name || "N/A"}
             </p>
@@ -80,7 +93,7 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
               <ul>
                 {vehicles.map((v, i) => (
                   <li key={i}>
-                    {v.model} ({v.plateNumber})
+                    {v.brand} {v.model} ({v.vehicle_number || v.plateNumber})
                   </li>
                 ))}
               </ul>
@@ -97,7 +110,7 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
               <ul>
                 {bookings.map((b, i) => (
                   <li key={i}>
-                    {b.service} -{" "}
+                    {b.vehicle_brand} {b.vehicle_model} → {b.service} -{" "}
                     <span
                       className={`status ${
                         b.status === "Pending"
@@ -107,7 +120,7 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
                           : "completed"
                       }`}
                     >
-                      {b.status}
+                      {b.status || "Pending"}
                     </span>
                   </li>
                 ))}
@@ -124,6 +137,12 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           </div>
         </div>
       </div>
+      {/* Navbar */}
+      <nav className="dashboard-nav">
+        <button className="btn logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      </nav>
 
       {/* Styles */}
       <style jsx>{`
@@ -131,7 +150,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
           padding: 20px;
         }
-
         .dashboard-nav {
           display: flex;
           justify-content: center;
@@ -141,25 +159,17 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           border-radius: 10px;
           margin-bottom: 20px;
         }
-
-        .logo {
-          font-size: 22px;
-          color: #007bff;
-        }
-
         .welcome {
           margin-bottom: 25px;
           font-size: 24px;
           font-weight: 600;
           color: #333;
         }
-
         .dashboard-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 20px;
         }
-
         .dashboard-card {
           background: #fff;
           padding: 20px;
@@ -167,11 +177,9 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
           transition: transform 0.2s ease-in-out;
         }
-
         .dashboard-card:hover {
           transform: translateY(-3px);
         }
-
         .btn {
           display: inline-block;
           margin-top: 12px;
@@ -183,7 +191,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
           transition: 0.3s ease;
           border: none;
         }
-
         .edit-btn {
           background: #ffc107;
           color: #fff;
@@ -191,7 +198,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
         .edit-btn:hover {
           background: #e0a800;
         }
-
         .add-btn {
           background: #17a2b8;
           color: #fff;
@@ -199,7 +205,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
         .add-btn:hover {
           background: #138496;
         }
-
         .book-btn {
           background: #28a745;
           color: #fff;
@@ -207,7 +212,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
         .book-btn:hover {
           background: #218838;
         }
-
         .logout-btn {
           background: #dc3545;
           color: #fff;
@@ -217,7 +221,6 @@ const Dashboard = ({ vehicles = [], bookings = [] }) => {
         .logout-btn:hover {
           background: #c82333;
         }
-
         .status.pending {
           color: #ffc107;
           font-weight: bold;

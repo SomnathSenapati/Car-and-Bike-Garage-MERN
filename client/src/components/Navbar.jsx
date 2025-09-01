@@ -18,8 +18,11 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+     localStorage.removeItem("token");
+     localStorage.removeItem("username");
+     localStorage.removeItem("email");
+     localStorage.removeItem("phone");
+     localStorage.removeItem("ID");
     setIsLoggedIn(false);
     setUserName("");
     navigate("/login");

@@ -5,6 +5,7 @@ const bookingSchema = new mongoose.Schema(
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required:true,
     },
     name: {
       type: String,
@@ -42,7 +43,7 @@ const bookingSchema = new mongoose.Schema(
     bookingDate: { type: Date, default: Date.now },
     status: {
       type: String,
-      enum: ["Pending", "In Progress", "Completed"],
+      enum: ["Pending", "Booked", "Rejected", "In Progress", "Completed"],
       default: "Pending",
     },
   },

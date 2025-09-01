@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
+    customer: "", // user ID
     name: "",
     email: "",
     vehicle_type: "",
@@ -11,20 +12,35 @@ const BookingForm = () => {
     service: "",
   });
 
-  // Dropdown data
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
+  const [userBookings, setUserBookings] = useState(null); // null = not loaded
 
-  // Load user info from localStorage
+  // Load user info and bookings
   useEffect(() => {
+    const storedId = localStorage.getItem("ID");
     const storedName = localStorage.getItem("username");
     const storedEmail = localStorage.getItem("email");
 
     setFormData((prev) => ({
       ...prev,
+      customer: storedId || "",
       name: storedName || "",
       email: storedEmail || "",
     }));
+
+    // Fetch user bookings
+    if (storedId) {
+      fetch(`http://localhost:2809/api/bookings/user/${storedId}`)
+        .then((res) => res.json())
+        .then((data) => setUserBookings(data.length > 0 ? data : []))
+        .catch((err) => {
+          console.error("Error fetching user bookings:", err);
+          setUserBookings([]); // show N/A on error
+        });
+    } else {
+      setUserBookings([]); // No user ID, show N/A
+    }
   }, []);
 
   // Handle input changes
@@ -32,7 +48,6 @@ const BookingForm = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Fetch brands when vehicle_type is selected
     if (name === "vehicle_type") {
       setFormData((prev) => ({
         ...prev,
@@ -49,9 +64,8 @@ const BookingForm = () => {
         .catch((err) => console.error(err));
     }
 
-    // Fetch models when vehicle_brand is selected
     if (name === "vehicle_brand") {
-      setFormData((prev) => ({ ...prev, vehicle_model: "" })); // reset model
+      setFormData((prev) => ({ ...prev, vehicle_model: "" }));
       fetch(`http://localhost:2809/api/vehicles/brand/${value}`)
         .then((res) => res.json())
         .then((data) => {
@@ -62,10 +76,9 @@ const BookingForm = () => {
     }
   };
 
-  // Handle submit → POST to backend
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting booking:", formData);
 
     try {
       const res = await fetch("http://localhost:2809/api/bookings", {
@@ -78,9 +91,14 @@ const BookingForm = () => {
 
       if (res.ok) {
         alert("✅ Booking submitted successfully!");
-        // reset form but keep name & email from localStorage
+
+        // Refresh booking list
+        fetch(`http://localhost:2809/api/bookings/user/${formData.customer}`)
+          .then((res) => res.json())
+          .then((data) => setUserBookings(data.length > 0 ? data : []));
+
         setFormData({
-          category: localStorage.getItem("ID"),
+          customer: localStorage.getItem("ID") || "",
           name: localStorage.getItem("username") || "",
           email: localStorage.getItem("email") || "",
           vehicle_type: "",
@@ -104,39 +122,28 @@ const BookingForm = () => {
     <div className="vehicle-form-container">
       <h2>Register Vehicle & Book Service</h2>
       <form onSubmit={handleSubmit}>
+        {/* Customer ID */}
+        <div>
+          <label>Customer ID</label>
+          <input type="text" value={formData.customer} readOnly />
+        </div>
+
         {/* Name */}
         <div>
-          <label htmlFor="name">Full Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            readOnly
-          />
+          <label>Full Name</label>
+          <input type="text" value={formData.name} readOnly />
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            readOnly
-          />
+          <label>Email</label>
+          <input type="email" value={formData.email} readOnly />
         </div>
 
         {/* Vehicle Type */}
         <div>
-          <label htmlFor="vehicle_type">Type</label>
+          <label>Type</label>
           <select
-            id="vehicle_type"
             name="vehicle_type"
             value={formData.vehicle_type}
             onChange={handleChange}
@@ -150,9 +157,8 @@ const BookingForm = () => {
 
         {/* Vehicle Brand */}
         <div>
-          <label htmlFor="vehicle_brand">Brand</label>
+          <label>Brand</label>
           <select
-            id="vehicle_brand"
             name="vehicle_brand"
             value={formData.vehicle_brand}
             onChange={handleChange}
@@ -170,9 +176,8 @@ const BookingForm = () => {
 
         {/* Vehicle Model */}
         <div>
-          <label htmlFor="vehicle_model">Model</label>
+          <label>Model</label>
           <select
-            id="vehicle_model"
             name="vehicle_model"
             value={formData.vehicle_model}
             onChange={handleChange}
@@ -188,12 +193,11 @@ const BookingForm = () => {
           </select>
         </div>
 
-        {/* Registration Number */}
+        {/* Vehicle Number */}
         <div>
-          <label htmlFor="vehicle_number">Vehicle Number</label>
+          <label>Vehicle Number</label>
           <input
             type="text"
-            id="vehicle_number"
             name="vehicle_number"
             value={formData.vehicle_number}
             onChange={handleChange}
@@ -204,9 +208,8 @@ const BookingForm = () => {
 
         {/* Service */}
         <div>
-          <label htmlFor="service">Service</label>
+          <label>Service</label>
           <select
-            id="service"
             name="service"
             value={formData.service}
             onChange={handleChange}
@@ -231,6 +234,26 @@ const BookingForm = () => {
 
         <button type="submit">Submit Booking</button>
       </form>
+
+      {/* Display User Bookings */}
+      <div className="booking-list">
+        <h3>Your Bookings</h3>
+        {userBookings === null ? (
+          <p>Loading...</p>
+        ) : userBookings.length === 0 ? (
+          <p>N/A</p>
+        ) : (
+          <ul>
+            {userBookings.map((b, i) => (
+              <li key={i}>
+                <strong>{b.vehicle_type}</strong> - {b.vehicle_brand}{" "}
+                {b.vehicle_model} ({b.vehicle_number}) → {b.service} |{" "}
+                <span style={{ color: "green" }}>{b.status || "Pending"}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

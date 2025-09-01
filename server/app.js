@@ -7,6 +7,7 @@ const SwaggerOptions = require("./swagger.json");
 const swaggerDocument = swaggerJsDoc(SwaggerOptions);
 const path = require("path");
 const dbCon = require("./app/config/db");
+const session = require("express-session");
 
 const app = express();
 
@@ -20,17 +21,37 @@ app.set("views", path.join(__dirname, "views"));
 app.use(cors());
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(
+  session({
+    secret: "smsooimuknmhaiattsha",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60,
+      path: "/",
+    },
+  })
+);
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.get("/", (req, res) => {
-  res.send("This is MY backend");
-});
+// app.get("/", (req, res) => {
+//   res.send("This is MY backend");
+// });
 
 // admin route
+const adminAuthRoutes = require("./app/routes/admin/authRoutes");
+app.use("/admin", adminAuthRoutes);
+
 const adminRoutes = require("./app/routes/admin/adminRoutes");
 app.use("/admin", adminRoutes);
 
@@ -57,7 +78,6 @@ app.use("/api/vehicles", require("./app/routes/vehicleRoutes"));
 app.use("/api/bookings", require("./app/routes/bookingRoutes"));
 app.use("/api/mechanics", require("./app/routes/mechanicsRoutes"));
 app.use("/api/services", require("./app/routes/serviceRoutes"));
-app.use("/api/inventory", require("./app/routes/inventoryRoutes"));
 app.use("/api/billing ", require("./app/routes/billingRoutes"));
 app.use("/api/user ", require("./app/routes/userRoutes"));
 

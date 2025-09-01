@@ -31,4 +31,13 @@ const AuthCheck = (req, res, next) => {
   next();
 };
 
-module.exports = { hashedPassword, comparePassword, AuthCheck };
+const isAdminLoggedIn=(req, res, next)=> {
+  if (req.session && req.session.admin) {
+    next(); 
+  } else {
+    res.redirect("/admin");
+  }
+};
+
+
+module.exports = { isAdminLoggedIn, hashedPassword, comparePassword, AuthCheck };
