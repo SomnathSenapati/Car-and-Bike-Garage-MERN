@@ -3,6 +3,7 @@ const user = require("../../models/User");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
+const { hashedPassword } = require("../../middleware/auth");
 class UserController {
   async createuser(req, res) {
     console.log(req.body);
@@ -10,17 +11,32 @@ class UserController {
 
     try {
       //console.log(req.body);
-      const { title, content } = req.body;
-
+      const { name,
+    phone,
+    email,
+    role,
+    address,
+    password,
+    isVerified} = req.body;
+    const existemail=await user.findOne({email})
+    if(existemail){
+      return res.redirect('/user/add')
+    }
+const hash=hashedPassword(password)
       const sdata = new user({
-        title,
-        content,
+     name,
+    phone,
+    email,
+    role,
+    address,
+    password:hash,
+    isVerified
       });
       const data = await sdata.save();
       if (data) {
         res.redirect("/user/list");
       } else {
-        res.redirect("/add");
+        res.redirect("/user/add");
       }
     } catch (error) {
       console.log(error);

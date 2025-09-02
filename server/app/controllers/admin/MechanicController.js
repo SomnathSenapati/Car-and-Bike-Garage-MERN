@@ -10,15 +10,22 @@ class MechanicController {
 
     try {
       //console.log(req.body);
-      const { title, content } = req.body;
+      const {  name,
+    phone,
+    skillset,// Example: ["Oil Change", "Dent Repair"]
+    experience,
+    address} = req.body;
 
       const sdata = new mechanic({
-        title,
-        content,
+        name,
+    phone,
+    skillset,// Example: ["Oil Change", "Dent Repair"]
+    experience,
+    address
       });
       const data = await sdata.save();
       if (data) {
-        res.redirect("/mechanic/list");
+        res.redirect("/mechanics/list");
       } else {
         res.redirect("/add");
       }
@@ -105,7 +112,7 @@ class MechanicController {
         });
       }
 
-      res.redirect("/mechanic/list");
+      res.redirect("/mechanics/list");
     } catch (error) {
       console.error("Update error:", error);
       return res.status(500).json({
@@ -128,7 +135,7 @@ class MechanicController {
         });
       }
 
-      res.redirect("/mechanic/list");
+      res.redirect("/mechanics/list");
     } catch (error) {
       console.error("Error deleting mechanic:", error);
       res.status(500).json({

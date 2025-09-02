@@ -1,6 +1,8 @@
 const Mechanic = require("../models/Mechanic");
 
 exports.addMechanic = async (req, res) => {
+  console.log(req.body);
+  
   try {
     const mechanic = await Mechanic.create(req.body);
     res.status(201).json(mechanic);

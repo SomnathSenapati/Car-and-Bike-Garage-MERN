@@ -10,7 +10,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DriveWell Admin - Login</title>
+    <title>DriveWell Technician - Login</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -48,15 +48,15 @@
                   <div class="p-5">
                     <div class="text-center">
                       <h1 class="h4 text-gray-900 mb-4">
-                        Welcome To DriveWell-Admin
+                        Welcome To DriveWell - Technician
                       </h1>
                     </div>
-                    <!-- Admin Login Form -->
-                    <form action="/admin/login" method="post">
+                    <!-- Technician Login Form -->
+                    <form action="/technician/login" method="post">
                       <div class="form-group">
                         <label for="Email">Email</label>
                         <input
-                          type="text"
+                          type="email"
                           class="form-control"
                           name="email"
                           id="email"
@@ -74,19 +74,27 @@
                           required
                         />
                       </div>
+
                       <button type="submit" class="btn btn-primary btn-block">
-                        Login as Admin
+                        Login
                       </button>
                     </form>
 
-                    <hr />
-                    <!-- Technician Option -->
-                    <div class="text-center">
-                      <p class="mb-2">Not an Admin?</p>
-                      <a href="/technician" class="btn btn-success btn-block">
-                        Login as Technician
+                    <!-- If user is not a technician -->
+                    <% if (typeof error !== "undefined") { %>
+                      <div class="alert alert-danger mt-3">
+                        <%= error %>
+                      </div>
+                    <% } %>
+
+                    <!-- Redirect to Admin Login -->
+                    <div class="text-center mt-4">
+                      <p class="mb-2">Not a technician?</p>
+                      <a href="/admin" class="btn btn-outline-secondary btn-block">
+                        Login as Admin
                       </a>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -97,13 +105,13 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
   </body>
 </html>

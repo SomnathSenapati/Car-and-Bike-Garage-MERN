@@ -44,9 +44,9 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// app.get("/", (req, res) => {
-//   res.send("This is MY backend");
-// });
+app.get("/", (req, res) => {
+  res.render("landing");
+});
 
 // admin route
 const adminAuthRoutes = require("./app/routes/admin/authRoutes");

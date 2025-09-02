@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const mechanicSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
+    name: { type: String, require: true },
+    phone: { type: String, require: true },
     skillset: { type: [String], default: [] }, // Example: ["Oil Change", "Dent Repair"]
-    experience: { type: Number, required: true },
-    address: { type: [String], required: true },
+    experience: { type: Number, require: true },
+    address: { type: [String], require: true },
   },
   { timestamps: true }
 );
