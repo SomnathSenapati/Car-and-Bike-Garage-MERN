@@ -8,6 +8,7 @@ const swaggerDocument = swaggerJsDoc(SwaggerOptions);
 const path = require("path");
 const dbCon = require("./app/config/db");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -39,7 +40,7 @@ app.use(
     },
   })
 );
-
+app.use(cookieParser())
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -65,13 +66,15 @@ const bookingRoute = require("./app/routes/admin/bookingRoutes");
 app.use("/booking", bookingRoute);
 
 
-// admin route
+// technician route
 const technicianRoutes = require("./app/routes/technician/technicianRoutes");
 app.use("/technician", technicianRoutes);
 
 const authTRoute = require("./app/routes/technician/authRoutes");
 app.use("/technician", authTRoute);
 
+const bookingTroure = require("./app/routes/technician/bookingRoutes");
+app.use("/technician", bookingTroure);
 
 // API Routes
 app.use("/api/auth", require("./app/routes/authRoutes"));

@@ -6,11 +6,9 @@ const hashedPassword = (password) => {
   const hash = bcryptjs.hashSync(password, salt);
   return hash;
 };
-
 const comparePassword = (password, hashedPassword) => {
   return bcryptjs.compareSync(password, hashedPassword);
 };
-
 const AuthCheck = (req, res, next) => {
   const token = req?.body?.token || req?.headers["x-access-token"];
   if (!token) {
@@ -30,14 +28,31 @@ const AuthCheck = (req, res, next) => {
   }
   next();
 };
-
-const isAdminLoggedIn=(req, res, next)=> {
+const AuthCheck1 = (req, res, next) => {
+  if (req.cookies && req.cookies.usertoken) {
+    jwt.verify(
+      req.cookies.usertoken,
+      "helloworldwelcometowebskitters",
+      (err, data) => {
+        req.user = data;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
+};
+const isAdminLoggedIn = (req, res, next) => {
   if (req.session && req.session.admin) {
-    next(); 
+    next();
   } else {
     res.redirect("/admin");
   }
 };
-
-
-module.exports = { isAdminLoggedIn, hashedPassword, comparePassword, AuthCheck };
+module.exports = {
+  isAdminLoggedIn,
+  hashedPassword,
+  comparePassword,
+  AuthCheck,
+  AuthCheck1,
+};
