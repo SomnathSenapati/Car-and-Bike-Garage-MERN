@@ -34,11 +34,12 @@ class bookingController {
 
   async bookingList(req, res) {
     try {
-      const data = await booking.find()
-      // .populate("customer", "name")
-      // .populate("vehicle", "model")
-      // .populate("service", "name")
-      .populate("mechanic", "name")
+      const data = await booking
+        .find()
+        // .populate("customer", "name")
+        // .populate("vehicle", "model")
+        // .populate("service", "name")
+        .populate("mechanic", "name");
       // .lean();
 
       const customers = await Customer.find();
@@ -162,28 +163,42 @@ class bookingController {
     }
   }
 
-async assignMechanic (req, res) {
-  try {
-    const { mechanicId } = req.body;
+  async assignMechanic(req, res) {
+    try {
+      const { mechanicId } = req.body;
 
-    const bookingdata = await booking.findById(req.params.id);
+      const bookingdata = await booking.findById(req.params.id);
 
-    if (!bookingdata) {
-      return res.status(404).json({ message: "Booking not found" });
+      if (!bookingdata) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      bookingdata.mechanic = mechanicId;
+      bookingdata.status = "Booked";
+
+      await bookingdata.save();
+
+      res.json({ message: "Mechanic assigned successfully", booking });
+    } catch (error) {
+      console.error("Error assigning mechanic:", error);
+      res.status(500).json({ message: "Error assigning mechanic", error });
     }
-
-    bookingdata.mechanic = mechanicId;
-    bookingdata.status = "Booked";
-
-    await bookingdata.save();
-
-    res.json({ message: "Mechanic assigned successfully", booking });
-  } catch (error) {
-    console.error("Error assigning mechanic:", error);
-    res.status(500).json({ message: "Error assigning mechanic", error });
   }
-};
+  // Reject a booking
+  async rejectBooking(req, res) {
+    try {
+      const bookingId = req.params.id;
 
+      await booking.findByIdAndUpdate(bookingId, { status: "Rejected" });
+
+      // req.flash("success", "Booking rejected successfully!");
+      res.redirect("/booking/list");
+    } catch (error) {
+      console.error("Error rejecting booking:", error);
+      req.flash("error", "Something went wrong while rejecting the booking");
+      res.redirect("/booking/list");
+    }
+  }
 }
 
 module.exports = new bookingController();
