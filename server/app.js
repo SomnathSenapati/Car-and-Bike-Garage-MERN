@@ -69,6 +69,8 @@ app.use("/booking", bookingRoute);
 const technicianRoutes = require("./app/routes/technician/technicianRoutes");
 app.use("/technician", technicianRoutes);
 
+const authTRoute = require("./app/routes/technician/authRoutes");
+app.use("/technician", authTRoute);
 
 
 // API Routes

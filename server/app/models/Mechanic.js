@@ -4,6 +4,8 @@ const mechanicSchema = new mongoose.Schema(
   {
     name: { type: String, require: true },
     phone: { type: String, require: true },
+    email: { type: String, require: true },
+    password: { type: String, require: true },
     skillset: { type: [String], default: [] }, // Example: ["Oil Change", "Dent Repair"]
     experience: { type: Number, require: true },
     address: { type: [String], require: true },

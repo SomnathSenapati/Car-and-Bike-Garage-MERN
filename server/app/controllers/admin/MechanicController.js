@@ -10,18 +10,24 @@ class MechanicController {
 
     try {
       //console.log(req.body);
-      const {  name,
-    phone,
-    skillset,// Example: ["Oil Change", "Dent Repair"]
-    experience,
-    address} = req.body;
+      const {
+        name,
+        phone,
+        email,
+        password,
+        skillset, // Example: ["Oil Change", "Dent Repair"]
+        experience,
+        address,
+      } = req.body;
 
       const sdata = new mechanic({
         name,
-    phone,
-    skillset,// Example: ["Oil Change", "Dent Repair"]
-    experience,
-    address
+        phone,
+        email,
+        password,
+        skillset, // Example: ["Oil Change", "Dent Repair"]
+        experience,
+        address,
       });
       const data = await sdata.save();
       if (data) {

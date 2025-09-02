@@ -81,11 +81,11 @@
                           <form
                             action="/booking/assign/<%= item._id %>"
                             method="post"
-                            class="d-inline"
+                            class="assign-form d-inline"
                           >
                             <select
                               name="mechanicId"
-                              class="form-control form-control-sm d-inline"
+                              class="form-control form-control-sm d-inline mechanic-select"
                               required
                             >
                               <option value="">-- Select Mechanic --</option>
@@ -95,12 +95,6 @@
                               </option>
                               <% }) %>
                             </select>
-                            <button
-                              type="submit"
-                              class="btn btn-sm btn-primary ml-1"
-                            >
-                              <i class="fas fa-user-cog"></i> Assign
-                            </button>
                           </form>
                           <% } else { %>
                           <span

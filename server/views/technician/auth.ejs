@@ -82,19 +82,19 @@
 
                     <!-- If user is not a technician -->
                     <% if (typeof error !== "undefined") { %>
-                      <div class="alert alert-danger mt-3">
-                        <%= error %>
-                      </div>
+                    <div class="alert alert-danger mt-3"><%= error %></div>
                     <% } %>
 
                     <!-- Redirect to Admin Login -->
                     <div class="text-center mt-4">
                       <p class="mb-2">Not a technician?</p>
-                      <a href="/admin" class="btn btn-outline-secondary btn-block">
+                      <a
+                        href="/admin"
+                        class="btn btn-outline-secondary btn-block"
+                      >
                         Login as Admin
                       </a>
                     </div>
-
                   </div>
                 </div>
               </div>

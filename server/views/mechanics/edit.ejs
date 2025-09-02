@@ -15,65 +15,92 @@
 
           <div class="container-fluid">
             <h1 class="h3 mb-4 text-gray-800">Edit Mechanic Info</h1>
+            
             <div class="card shadow mb-4">
               <div class="card-body">
                 <form action="/mechanics/update/<%= data._id %>" method="POST">
+                  
+                  <!-- Name -->
                   <div class="form-group">
-                    <label>Name</label>
+                    <label for="name">Full Name</label>
                     <input 
                       type="text" 
+                      id="name"
                       name="name" 
                       class="form-control" 
+                      placeholder="Enter mechanic's full name"
                       value="<%= data.name %>" 
                       required 
                     />
                   </div>
 
+                  <!-- Phone -->
                   <div class="form-group">
-                    <label>Phone</label>
+                    <label for="phone">Phone Number</label>
                     <input 
                       type="text" 
+                      id="phone"
                       name="phone" 
                       class="form-control" 
+                      placeholder="Enter phone number"
+                      pattern="[0-9]{10}" 
+                      title="Enter a valid 10-digit number"
                       value="<%= data.phone %>" 
                       required 
                     />
                   </div>
 
+                  <!-- Skillset -->
                   <div class="form-group">
-                    <label>Expertise</label>
+                    <label for="skillset">Expertise / Skillset</label>
                     <input 
                       type="text" 
-                      name="expertise" 
+                      id="skillset"
+                      name="skillset" 
                       class="form-control" 
+                      placeholder="e.g., Engine Repair, Electrical"
                       value="<%= data.skillset %>" 
                       required 
                     />
                   </div>
 
+                  <!-- Experience -->
                   <div class="form-group">
-                    <label>Experience (Years)</label>
+                    <label for="experience">Experience (Years)</label>
                     <input 
                       type="number" 
+                      id="experience"
                       name="experience" 
                       class="form-control" 
+                      placeholder="Enter years of experience"
+                      min="0"
                       value="<%= data.experience %>" 
                       required 
                     />
                   </div>
 
+                  <!-- Address -->
                   <div class="form-group">
-                    <label>Address</label>
+                    <label for="address">Address</label>
                     <textarea 
+                      id="address"
                       name="address" 
                       rows="3" 
                       class="form-control" 
+                      placeholder="Enter mechanic's address"
                       required
                     ><%= data.address %></textarea>
                   </div>
 
-                  <button type="submit" class="btn btn-primary">Update</button>
-                  <a href="/mechanic/list" class="btn btn-secondary">Cancel</a>
+                  <!-- Buttons -->
+                  <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save"></i> Update
+                    </button>
+                    <a href="/mechanics/list" class="btn btn-secondary">
+                      <i class="fas fa-times"></i> Cancel
+                    </a>
+                  </div>
                 </form>
               </div>
             </div>
@@ -84,6 +111,7 @@
       </div>
     </div>
 
+    <!-- Scripts -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
