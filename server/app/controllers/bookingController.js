@@ -37,17 +37,23 @@ exports.updateBookingStatus = async (req, res) => {
 // Assign mechanic to booking
 exports.assignMechanic = async (req, res) => {
   try {
+    const { id } = req.params; // booking ID
     const { mechanicId } = req.body;
+
     const booking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      { mechanic: mechanicId },
+      id,
+      { mechanic: mechanicId, status: "Booked" },
       { new: true }
-    ).populate("mechanic", "name email phone role");
-    res.json(booking);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    ).populate("mechanic"); // populate mechanic details
+
+    res.status(200).json({ success: true, booking });
+  } catch (error) {
+    console.error("Error assigning mechanic:", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
 // Get bookings for a specific user (customer)
 exports.getBookingsByUser = async (req, res) => {
   try {

@@ -6,7 +6,7 @@ const {
   assignMechanic,
   getBookingsByUser,
   confirmBooking,
-  rejectBooking,
+  rejectBooking, 
 } = require("../controllers/bookingController");
 
 const router = express.Router();

@@ -79,35 +79,34 @@
                           <% if(item.status === "Pending") { %>
                           <!-- Dropdown for mechanics -->
                           <form
-                            action="/booking/assign/<%= item._id %>"
-                            method="post"
+                            action="/booking/<%= item._id %>/assign-mechanic?_method=PUT"
+                            method="POST"
                             class="assign-form d-inline"
                           >
                             <select
                               name="mechanicId"
                               class="form-control form-control-sm d-inline mechanic-select"
                               required
+                              onchange="this.form.submit()"
                             >
                               <option value="">-- Select Mechanic --</option>
                               <% mechanics.forEach(mechanic => { %>
                               <option value="<%= mechanic._id %>">
-                                <%= mechanic.name %>
+                                <%= mechanic.name %> - <%= mechanic.skillset.join(", ") %>
                               </option>
                               <% }) %>
                             </select>
                           </form>
                           <% } else { %>
-                          <span
-                            ><%= item.mechanic ? item.mechanic.name : 'N/A'
-                            %></span
-                          >
+                          <span>
+                            <%= item.mechanic ? item.mechanic.name : 'N/A' %>
+                          </span>
                           <% } %>
                         </td>
 
                         <td>
                           <span class="badge badge-secondary">
-                            <%= item.bookingDate ? new
-                            Date(item.bookingDate).toDateString() : 'N/A' %>
+                            <%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %>
                           </span>
                         </td>
                         <td>

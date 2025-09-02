@@ -7,6 +7,7 @@ const Customer = require("../../models/User");
 const Vehicle = require("../../models/Vehicle");
 const Service = require("../../models/Service");
 const Mechanic = require("../../models/Mechanic");
+
 class bookingController {
   async createbooking(req, res) {
     console.log(req.body);
@@ -33,18 +34,17 @@ class bookingController {
 
   async bookingList(req, res) {
     try {
-      const data = await booking
-        .find()
-        // .populate("customer", "name")
-        // .populate("vehicle", "model")
-        // .populate("service", "name")
-        // .populate("mechanic", "name")
-        // .lean();
+      const data = await booking.find()
+      // .populate("customer", "name")
+      // .populate("vehicle", "model")
+      // .populate("service", "name")
+      .populate("mechanic", "name")
+      // .lean();
 
-        const customers = await Customer.find();
-        const vehicles = await Vehicle.find();
-        const services = await Service.find();
-        const mechanics = await Mechanic.find();
+      const customers = await Customer.find();
+      const vehicles = await Vehicle.find();
+      const services = await Service.find();
+      const mechanics = await Mechanic.find();
 
       res.render("booking/list", {
         title: "Booking List",
@@ -161,5 +161,29 @@ class bookingController {
       });
     }
   }
+
+async assignMechanic (req, res) {
+  try {
+    const { mechanicId } = req.body;
+
+    const bookingdata = await booking.findById(req.params.id);
+
+    if (!bookingdata) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    bookingdata.mechanic = mechanicId;
+    bookingdata.status = "Booked";
+
+    await bookingdata.save();
+
+    res.json({ message: "Mechanic assigned successfully", booking });
+  } catch (error) {
+    console.error("Error assigning mechanic:", error);
+    res.status(500).json({ message: "Error assigning mechanic", error });
+  }
+};
+
 }
+
 module.exports = new bookingController();

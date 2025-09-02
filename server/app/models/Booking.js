@@ -5,7 +5,7 @@ const bookingSchema = new mongoose.Schema(
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required:true,
+      required: true,
     },
     name: {
       type: String,
@@ -32,14 +32,15 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     service: {
-      type: String, 
+      type: String,
       required: true,
     },
     mechanic: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Mechanic",
       default: null,
     },
+
     bookingDate: { type: Date, default: Date.now },
     status: {
       type: String,
