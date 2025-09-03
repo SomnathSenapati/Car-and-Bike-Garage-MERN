@@ -1,28 +1,48 @@
 {
-    "swaggerDefinition": {
-      "info": {
-        "title": "DriveWell App Api",
-        "version": "1.0.0",
-        "description": "DriveWell App API documentation created by Somnath Senapati",
-        "contact": {
-          "name": "Somnath Senapati"
-        },
-        "servers": [
-          "http://localhost:2809",
-          "https://ajax-node-mongodb-swagger-apidoc.onrender.com/api-docs"
-        ]  
+  "swaggerDefinition": {
+    "info": {
+      "title": "DriveWell App Api",
+      "version": "1.0.0",
+      "description": "DriveWell App API documentation created by Somnath Senapati",
+      "contact": {
+        "name": "Somnath Senapati"
       },
-      "tags": [
-        {
-            "name": "Auth",
-            "description": "User Auth API"
-        }
+      "servers": [
+        "http://localhost:2809",
+        "https://ajax-node-mongodb-swagger-apidoc.onrender.com/api-docs"
+      ]
+    },
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "User Auth API"
+      },
+      {
+        "name": "booking",
+        "description": "Booking API"
+      },
+      {
+        "name": "billing",
+        "description": "Billing API"
+      },
+      {
+        "name": "service",
+        "description": "Service API"
+      },
+      {
+        "name": "mechanic",
+        "description": "Mechanic API"
+      },
+      {
+        "name": "user",
+        "description": "User API"
+      },
+      {
+        "name": "vehivle",
+        "description": "Vehicle API"
+      }
     ],
     "schemes": "['https', 'http']"
-      
-    },
-    "apis": [
-      "app.js",
-      "./app/routes/*.js"
-    ]
-  }
+  },
+  "apis": ["app.js", "./app/routes/*.js"]
+}
