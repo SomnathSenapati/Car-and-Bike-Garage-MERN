@@ -47,6 +47,7 @@ const bookingSchema = new mongoose.Schema(
       enum: ["Pending", "Booked", "Rejected", "In Progress", "Completed"],
       default: "Pending",
     },
+    bill: { type: mongoose.Schema.Types.ObjectId, ref: "Bill" },
   },
   { timestamps: true }
 );

@@ -1,9 +1,9 @@
 {
     "swaggerDefinition": {
       "info": {
-        "title": "Fitness & Diet Tracking App Api",
+        "title": "DriveWell App Api",
         "version": "1.0.0",
-        "description": "Fitness & Diet Tracking App API documentation created by Somnath Senapati",
+        "description": "DriveWell App API documentation created by Somnath Senapati",
         "contact": {
           "name": "Somnath Senapati"
         },

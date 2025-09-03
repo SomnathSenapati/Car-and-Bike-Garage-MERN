@@ -15,8 +15,9 @@ exports.getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find()
       .populate("customer", "name email phone role") 
-      .populate("mechanic", "name email phone role");
-    res.json(bookings);
+      .populate("mechanic", "name email phone role")
+      .populate("bill");
+      res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
