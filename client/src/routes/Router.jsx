@@ -15,7 +15,7 @@ import Testimonial from "../pages/Testimonial";
 import Profile from "../pages/Profile";
 import VerifyEmail from "../pages/VerifyEmail";
 import PrivateRoute from "../components/PrivateRoute";
-import BookingForm from "../pages/bookinkForm";
+import BookingForm from "../pages/BookinkForm";
 
 const Router = () => {
   return (

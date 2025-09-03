@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2"; // ✅ import sweetalert2
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
-    customer: "", // user ID
+    customer: "",
     name: "",
     email: "",
     vehicle_type: "",
@@ -14,7 +15,7 @@ const BookingForm = () => {
 
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
-  const [userBookings, setUserBookings] = useState(null); // null = not loaded
+  const [userBookings, setUserBookings] = useState(null);
 
   // Load user info and bookings
   useEffect(() => {
@@ -29,17 +30,16 @@ const BookingForm = () => {
       email: storedEmail || "",
     }));
 
-    // Fetch user bookings
     if (storedId) {
       fetch(`http://localhost:2809/api/bookings/user/${storedId}`)
         .then((res) => res.json())
         .then((data) => setUserBookings(data.length > 0 ? data : []))
         .catch((err) => {
           console.error("Error fetching user bookings:", err);
-          setUserBookings([]); // show N/A on error
+          setUserBookings([]);
         });
     } else {
-      setUserBookings([]); // No user ID, show N/A
+      setUserBookings([]);
     }
   }, []);
 
@@ -90,13 +90,20 @@ const BookingForm = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("✅ Booking submitted successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "Booking Submitted!",
+          text: "✅ Your booking has been successfully registered.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
         // Refresh booking list
         fetch(`http://localhost:2809/api/bookings/user/${formData.customer}`)
           .then((res) => res.json())
           .then((data) => setUserBookings(data.length > 0 ? data : []));
 
+        // Reset form
         setFormData({
           customer: localStorage.getItem("ID") || "",
           name: localStorage.getItem("username") || "",
@@ -110,11 +117,19 @@ const BookingForm = () => {
         setBrands([]);
         setModels([]);
       } else {
-        alert("❌ Failed to submit: " + (data.message || "Unknown error"));
+        Swal.fire({
+          icon: "error",
+          title: "Booking Failed",
+          text: data.message || "❌ Something went wrong.",
+        });
       }
     } catch (error) {
       console.error("Booking error:", error);
-      alert("⚠️ Something went wrong while submitting booking");
+      Swal.fire({
+        icon: "warning",
+        title: "Network Error",
+        text: "⚠️ Unable to submit booking. Try again later.",
+      });
     }
   };
 

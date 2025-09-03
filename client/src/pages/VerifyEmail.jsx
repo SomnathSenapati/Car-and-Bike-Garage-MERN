@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(60);
   const [isResending, setIsResending] = useState(false);
 
@@ -23,11 +22,9 @@ const VerifyEmail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
 
     if (timeLeft <= 0) {
-      setError("❌ OTP expired. Please request a new one.");
+      Swal.fire("❌ OTP Expired", "Please request a new OTP.", "error");
       return;
     }
 
@@ -41,44 +38,59 @@ const VerifyEmail = () => {
       );
 
       if (response.status === 200) {
-        setMessage("✅ Email verified successfully! Redirecting to login...");
-        setTimeout(() => navigate("/login"), 1000);
+        Swal.fire({
+          icon: "success",
+          title: "✅ Verified!",
+          text: "Email verified successfully. Redirecting...",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => navigate("/login"));
       } else {
-        setError("❌ Invalid OTP or verification failed.");
+        Swal.fire("❌ Failed", "Invalid OTP or verification failed.", "error");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Verification failed. Try again."
+      Swal.fire(
+        "❌ Error",
+        err.response?.data?.message || "Verification failed. Try again.",
+        "error"
       );
     }
   };
 
   const handleResendOtp = async () => {
     if (!email) {
-      setError("Please enter your email before requesting OTP.");
+      Swal.fire(
+        "⚠️ Missing Email",
+        "Please enter your email first.",
+        "warning"
+      );
       return;
     }
 
     setIsResending(true);
-    setError("");
-    setMessage("");
 
     try {
       const response = await axios.post(
         "http://localhost:2809/api/user/resend-otp",
-        {
-          email,
-        }
+        { email }
       );
 
       if (response.status === 200) {
-        setMessage("📧 New OTP has been sent to your email.");
+        Swal.fire(
+          "📧 OTP Sent",
+          "A new OTP has been sent to your email.",
+          "success"
+        );
         setTimeLeft(60);
       } else {
-        setError("❌ Failed to resend OTP.");
+        Swal.fire("❌ Failed", "Could not resend OTP.", "error");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Error resending OTP.");
+      Swal.fire(
+        "❌ Error",
+        err.response?.data?.message || "Error resending OTP.",
+        "error"
+      );
     } finally {
       setIsResending(false);
     }
@@ -127,14 +139,11 @@ const VerifyEmail = () => {
           </button>
         )}
       </form>
-
-      {message && <p style={styles.success}>{message}</p>}
-      {error && <p style={styles.error}>{error}</p>}
     </div>
   );
 };
 
-// Style object
+// Styles
 const styles = {
   container: {
     maxWidth: "400px",
@@ -168,14 +177,6 @@ const styles = {
     backgroundColor: "#1976d2",
     color: "#fff",
     cursor: "pointer",
-  },
-  success: {
-    color: "green",
-    marginTop: "15px",
-  },
-  error: {
-    color: "red",
-    marginTop: "15px",
   },
 };
 

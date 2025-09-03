@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // ✅ import SweetAlert2
 import "../App.css";
 
 const Login = () => {
@@ -29,9 +30,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Check captcha first
+    // ✅ Check captcha first
     if (captchaInput.toUpperCase() !== captcha) {
-      alert("Captcha code does not match!");
+      Swal.fire({
+        icon: "error",
+        title: "Captcha Mismatch",
+        text: "Captcha code does not match. Please try again.",
+      });
       generateCaptcha(); // regenerate on failure
       setCaptchaInput("");
       return;
@@ -46,20 +51,34 @@ const Login = () => {
 
       const data = await res.json();
       if (res.ok) {
-        alert("Login Successful!");
-        console.log(data)
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.user?.name || "User");
-        localStorage.setItem("email", data.user?.email || "Email");
-        localStorage.setItem("phone", data.user?.phone || "Phone");
-        localStorage.setItem("ID", data.user?._id || "Id");
-        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back, ${data.user?.name || "User"} 👋`,
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("username", data.user?.name || "User");
+          localStorage.setItem("email", data.user?.email || "Email");
+          localStorage.setItem("phone", data.user?.phone || "Phone");
+          localStorage.setItem("ID", data.user?._id || "Id");
+          navigate("/");
+        });
       } else {
-        alert(data.message || "Login failed");
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: data.message || "Invalid credentials",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please try again later.",
+      });
     }
   };
 
@@ -119,46 +138,45 @@ const Login = () => {
 
       {/* Styling */}
       <style jsx>{`
-  .captcha-container {
-    margin: 15px 0;
-  }
+        .captcha-container {
+          margin: 15px 0;
+        }
 
-  .captcha-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f1f1f1;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 20px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin-bottom: 8px;
-  }
+        .captcha-box {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: #f1f1f1;
+          padding: 8px 12px;
+          border-radius: 5px;
+          font-family: monospace;
+          font-size: 20px;
+          font-weight: bold;
+          letter-spacing: 3px;
+          margin-bottom: 8px;
+        }
 
-  .captcha-text {
-    color: #2c3e50;
-    text-shadow: 1px 1px 2px #999;
-  }
+        .captcha-text {
+          color: #2c3e50;
+          text-shadow: 1px 1px 2px #999;
+        }
 
-  .refresh-btn {
-    border: none;
-    background: transparent;
-    font-size: 14px;       /* 👈 smaller size */
-    cursor: pointer;
-    padding: 4px 6px;      /* 👈 reduce spacing */
-    border-radius: 50%;    /* 👈 round button */
-    transition: 0.2s ease-in-out;
-  }
+        .refresh-btn {
+          border: none;
+          background: transparent;
+          font-size: 14px;
+          cursor: pointer;
+          padding: 4px 6px;
+          border-radius: 50%;
+          transition: 0.2s ease-in-out;
+        }
 
-  .refresh-btn:hover {
-    background: #e0e0e0;   /* 👈 subtle hover */
-    color: #007bff;
-    transform: scale(1.1); /* 👈 slight zoom on hover */
-  }
-`}</style>
-
+        .refresh-btn:hover {
+          background: #e0e0e0;
+          color: #007bff;
+          transform: scale(1.1);
+        }
+      `}</style>
     </div>
   );
 };

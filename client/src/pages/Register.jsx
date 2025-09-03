@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Register = () => {
   const navigate = useNavigate();
@@ -27,21 +28,35 @@ const Register = () => {
 
       const data = await res.json();
       if (res.status === 201 || res.status === 200) {
-        alert("Registration Successful! Please login.");
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          address: "",
-          password: "",
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful!",
+          text: "Please check your email to verify your account.",
+          confirmButtonText: "OK",
+        }).then(() => {
+          setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            address: "",
+            password: "",
+          });
+          navigate("/emailVerification");
         });
-        navigate("/emailVerification"); 
       } else {
-        alert(data.message || "Registration failed");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: data.message || "Registration failed",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please try again later.",
+      });
     }
   };
 
