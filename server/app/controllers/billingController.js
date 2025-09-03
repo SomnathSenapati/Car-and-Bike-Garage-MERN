@@ -1,19 +1,47 @@
-const Billing = require("../models/Billing");
+const Bill = require("../models/Bill");
+const Booking = require("../models/Booking");
 
-exports.createBill = async (req, res) => {
+exports.generateBill = async (req, res) => {
   try {
-    const bill = await Billing.create(req.body);
-    res.status(201).json(bill);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    const bookingId = req.params.id;
+    const booking = await Booking.findById(bookingId)
+      .populate("customer")
+      .populate("service")
+      .populate("mechanic");
 
-exports.getBills = async (req, res) => {
-  try {
-    const bills = await Billing.find().populate("booking");
-    res.json(bills);
+    if (!booking) {
+      return res.status(404).send("Booking not found");
+    }
+
+    // Generate invoice number (e.g. INV-20250001)
+    const lastBill = await Bill.findOne().sort({ createdAt: -1 });
+    let invoiceNumber = "INV-20250001";
+    if (lastBill) {
+      const lastNum = parseInt(lastBill.invoiceNumber.split("-")[1]);
+      invoiceNumber = `INV-${lastNum + 1}`;
+    }
+
+    // Calculate total amount from services
+    const totalAmount = booking.service.reduce((sum, s) => sum + s.price, 0);
+
+    // Create bill
+    const bill = new Bill({
+      bookingId,
+      invoiceNumber,
+      customer: booking.customer._id,
+      services: booking.service.map((s) => s._id),
+      mechanic: booking.mechanic._id,
+      amount: totalAmount,
+    });
+
+    await bill.save();
+
+    res.status(201).json({
+      message: "Bill generated successfully",
+      bill,
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).send("Server error");
   }
 };

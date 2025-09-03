@@ -92,7 +92,8 @@
                               <option value="">-- Select Mechanic --</option>
                               <% mechanics.forEach(mechanic => { %>
                               <option value="<%= mechanic._id %>">
-                                <%= mechanic.name %> - <%= mechanic.skillset.join(", ") %>
+                                <%= mechanic.name %> - <%=
+                                mechanic.skillset.join(", ") %>
                               </option>
                               <% }) %>
                             </select>
@@ -106,7 +107,8 @@
 
                         <td>
                           <span class="badge badge-secondary">
-                            <%= item.bookingDate ? new Date(item.bookingDate).toDateString() : 'N/A' %>
+                            <%= item.bookingDate ? new
+                            Date(item.bookingDate).toDateString() : 'N/A' %>
                           </span>
                         </td>
                         <td>
@@ -133,15 +135,31 @@
                             <i class="fas fa-times-circle"></i> Reject
                           </a>
 
-                          <!-- Confirm button -->
-                          <!-- <a
-                            href="/booking/confirm/<%= item._id %>"
-                            class="btn btn-sm btn-success ml-1"
-                            onclick="return confirm('Are you sure you want to confirm this booking?')"
+                          <% } else if(item.status === "Completed") { %> <%
+                          if(item.bill) { %>
+                          <!-- View Bill button -->
+                          <a
+                            href="/booking/bill/view/<%= item.bill._id %>"
+                            class="btn btn-sm btn-primary"
                           >
-                            <i class="fas fa-check-circle"></i> Confirm
-                          </a> -->
+                            <i class="fas fa-eye"></i> View Bill
+                          </a>
                           <% } else { %>
+                          <!-- Generate Bill button -->
+                          <form
+                            action="/booking/bill/generate/<%= item._id %>"
+                            method="POST"
+                            class="d-inline"
+                          >
+                            <button
+                              type="submit"
+                              class="btn btn-sm btn-success"
+                              onclick="return confirm('Generate bill for this booking?')"
+                            >
+                              <i class="fas fa-file-invoice"></i> Generate Bill
+                            </button>
+                          </form>
+                          <% } %> <% } else { %>
                           <span>N/A</span>
                           <% } %>
                         </td>

@@ -1,4 +1,3 @@
-// const ErrorCode = require("../../helper/httpsServerCode");
 const booking = require("../../models/Booking");
 const fs = require("fs").promises;
 const fsSync = require("fs");
@@ -7,6 +6,7 @@ const Customer = require("../../models/User");
 const Vehicle = require("../../models/Vehicle");
 const Service = require("../../models/Service");
 const Mechanic = require("../../models/Mechanic");
+const Bill = require("../../models/Bill");
 
 class bookingController {
   async createbooking(req, res) {
@@ -197,6 +197,67 @@ class bookingController {
       console.error("Error rejecting booking:", error);
       req.flash("error", "Something went wrong while rejecting the booking");
       res.redirect("/booking/list");
+    }
+  }
+  async generateBill(req, res) {
+    try {
+      const bookingId = req.params.bookingId;
+      console.log("Booking ID:", bookingId);
+
+      // Find booking by ID
+      const bookingData = await booking
+        .findById(bookingId)
+        .populate("customer service mechanic");
+
+      if (!bookingData) {
+        return res.status(404).send("Booking not found");
+      }
+
+      // Create unique invoice number
+      const invoiceNumber = "INV-" + Date.now();
+
+      // Create Bill
+      const bill = new Bill({
+        bookingId: bookingData._id,
+        invoiceNumber,
+        customer: bookingData.customer?._id,
+        services: bookingData.service ? [bookingData.service._id] : [],
+        mechanic: bookingData.mechanic?._id,
+        amount: bookingData.service?.price || 0,
+      });
+
+      await bill.save();
+
+      // Mark booking as billed
+      bookingData.billGenerated = true;
+      await bookingData.save();
+
+      // ✅ FIX: absolute path
+      res.redirect("/booking/bill/view/" + bill._id);
+    } catch (err) {
+      console.error("Error generating bill:", err);
+      res.status(500).send("Error generating bill");
+    }
+  }
+  async viewBill(req, res) {
+    try {
+      const bill = await Bill.findById(req.params.id)
+        .populate("bookingId")
+        .populate("customer")
+        .populate("services")
+        .populate("mechanic");
+
+      if (!bill) {
+        return res.status(404).send("Bill not found");
+      }
+
+      res.render("booking/view", {
+        title: "View Bill",
+        bill,
+      });
+    } catch (err) {
+      console.error("Error loading bill:", err);
+      res.status(500).send("Error loading bill");
     }
   }
 }

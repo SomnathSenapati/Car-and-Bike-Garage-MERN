@@ -18,6 +18,9 @@ router.post('/update/:id',BookingController.update)
 router.get('/delete/:id',BookingController.delete)
 router.post("/:id/assign-mechanic", BookingController.assignMechanic);
 router.get("/reject/:id", BookingController.rejectBooking);
+router.post("/generate/:bookingId", BookingController.generateBill);
+router.post("/bill/generate/:bookingId", BookingController.generateBill);
+router.get("/bill/view/:id", BookingController.viewBill);
 
 // router.get("/", getAllBookings);
 module.exports = router;
