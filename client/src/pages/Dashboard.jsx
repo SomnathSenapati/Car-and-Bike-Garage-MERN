@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+// import "/app.css"
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);

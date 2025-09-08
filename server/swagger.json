@@ -18,27 +18,27 @@
         "description": "User Auth API"
       },
       {
-        "name": "booking",
-        "description": "Booking API"
+        "name": "Service Booking",
+        "description": "Service Booking API"
       },
       {
-        "name": "billing",
+        "name": "Billing",
         "description": "Billing API"
       },
       {
-        "name": "service",
+        "name": "Service",
         "description": "Service API"
       },
       {
-        "name": "mechanic",
+        "name": "Mechanic",
         "description": "Mechanic API"
       },
       {
-        "name": "user",
+        "name": "User",
         "description": "User API"
       },
       {
-        "name": "vehivle",
+        "name": "Vehicle",
         "description": "Vehicle API"
       }
     ],
